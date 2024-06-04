@@ -2,9 +2,7 @@ package com.csrp.csrp.dto.request;
 
 import com.csrp.csrp.entity.User;
 import com.csrp.csrp.type.Role;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
@@ -29,9 +27,9 @@ public class SignUpRequestDTO {
   @Size(min = 11, max = 11)
   private String phone;
 
-
-
-  private int age;
+  @NotNull
+  @Min(value = 1)
+  private Integer age;
 
   @NotBlank
   private String address;
