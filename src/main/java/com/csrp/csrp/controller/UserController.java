@@ -1,6 +1,8 @@
 package com.csrp.csrp.controller;
 
+import com.csrp.csrp.dto.request.SignInRequestDTO;
 import com.csrp.csrp.dto.request.SignUpRequestDTO;
+import com.csrp.csrp.dto.response.SignInResponseDTO;
 import com.csrp.csrp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +24,20 @@ public class UserController {
       @RequestPart("user") @Validated SignUpRequestDTO signUpRequestDTO,
       @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
   ) {
-    log.info("DTO -{}, image - {}", signUpRequestDTO, profileImage);
     String profilePath = null;
     if (profileImage != null) {
       profilePath = userService.uploadProfileImage(profileImage);
     }
     boolean result = userService.SignUp(signUpRequestDTO, profilePath);
     return ResponseEntity.ok().body(result);
+  }
+
+  // 로그인
+  @PostMapping("/signIn")
+  public ResponseEntity<?>signIn(
+      @RequestBody @Validated SignInRequestDTO signInRequestDTO
+      ) {
+    SignInResponseDTO signInResponseDTO = userService.signIn(signInRequestDTO);
+    return ResponseEntity.ok().body(signInResponseDTO);
   }
 }
