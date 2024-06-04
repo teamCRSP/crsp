@@ -23,7 +23,9 @@ public enum ErrorCode {
   MISSING_REQUEST_DTO_ERROR(HttpStatus.NOT_FOUND, "I-001", "DTO 값이 없습니다."),
 
   // USER
-  EXISTS_USER_EMAIL(HttpStatus.BAD_REQUEST, "U-001", "이메일이 존재합니다.");
+  EXISTS_USER_EMAIL(HttpStatus.BAD_REQUEST, "U-001", "이메일이 존재합니다."),
+  NOT_EXISTS_USER_EMAIL(HttpStatus.NOT_FOUND, "U-002", "회원이 존재하지 않습니다."),
+  NOT_ACCORD_USER_PASSWORD(HttpStatus.NOT_FOUND, "U-003", "패스워드가 맞지 않습니다.");
 
   private final HttpStatus httpStatus;
   private final String divisionCode;
