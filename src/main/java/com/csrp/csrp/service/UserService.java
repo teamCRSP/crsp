@@ -45,9 +45,8 @@ public class UserService {
 
   // 파일명 변경 (사진 이름 중복 방지)
   public String uploadProfileImage(MultipartFile profileImage) {
-    String uniqueFileName = UUID.randomUUID() + "_" + profileImage.getOriginalFilename();
 
-    return uniqueFileName;
+    return UUID.randomUUID() + "_" + profileImage.getOriginalFilename();
   }
 
   // 로그인 검증
