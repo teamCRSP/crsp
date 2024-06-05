@@ -38,7 +38,7 @@ public class SignUpRequestDTO {
 
   // 유저 프로필 이미지 엔터티에 주입
 
-  public User toEntity(String profileImage, String encodedPassword) {
+  public User toEntity(String profileImagePath, String encodedPassword) {
     return User.builder()
         .email(this.email)
         .password(encodedPassword)
@@ -47,7 +47,7 @@ public class SignUpRequestDTO {
         .age(this.age)
         .address(this.address)
         .role(this.role)
-        .profileImage(profileImage)
+        .profileImage(profileImagePath)
         .build();
   }
 }
