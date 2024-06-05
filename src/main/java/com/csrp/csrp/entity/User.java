@@ -7,9 +7,11 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,4 +50,21 @@ public class User extends BaseTime{
   @ColumnDefault("'CUSTOMER'")
   private Role role;
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  private List<ReportAccepted> reportAccepted = new ArrayList<ReportAccepted>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  private List<Love> loves = new ArrayList<Love>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  private List<Answer> answers = new ArrayList<Answer>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  private List<Inquiry> inquiries = new ArrayList<Inquiry>();
+
+//  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+//  private List<ConcertInfo> concertInfos = new ArrayList<ConcertInfo>();
+
+//  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+//  private List<ReservationHistory> reservationHistories = new ArrayList<ReservationHistory>();
 }
