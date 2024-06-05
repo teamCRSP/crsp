@@ -2,6 +2,7 @@ package com.csrp.csrp.service;
 
 import com.csrp.csrp.dto.request.SignInRequestDTO;
 import com.csrp.csrp.dto.request.SignUpRequestDTO;
+import com.csrp.csrp.dto.request.UserDeleteRequestDTO;
 import com.csrp.csrp.dto.request.UserInfoModifyRequestDTO;
 import com.csrp.csrp.dto.response.SignInResponseDTO;
 import com.csrp.csrp.dto.response.UserInfoModifyResponseDTO;
@@ -73,6 +74,7 @@ public class UserService {
     return new SignInResponseDTO(token, user);
   }
 
+  // 회원정보 수정
   public UserInfoModifyResponseDTO userInfoModify(UserInfoModifyRequestDTO userInfoModifyRequestDTO, MultipartFile profileImage, TokenUserInfo tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
@@ -82,5 +84,21 @@ public class UserService {
     User save = userRepository.save(modifyUser);
 
     return new UserInfoModifyResponseDTO(save);
+  }
+
+  // 회원정보 삭제
+  public boolean userDelete(UserDeleteRequestDTO userDeleteRequestDTO, TokenUserInfo tokenUserInfo) {
+    User user = userRepository.findById(tokenUserInfo.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
+    if (!user.getEmail().equals(userDeleteRequestDTO.getEmail())) {
+      throw new CustomException(ErrorCode.NOT_ACCORD_USER_EMAIL);
+    }
+    String inputPassword = userDeleteRequestDTO.getPassword();
+    String encoderPassword = user.getPassword();
+    if (!encoder.matches(inputPassword, encoderPassword)) {
+      throw new CustomException(ErrorCode.NOT_ACCORD_USER_PASSWORD);
+    }
+    userRepository.deleteById(user.getId());
+    return true;
   }
 }
