@@ -2,6 +2,7 @@ package com.csrp.csrp.controller;
 
 import com.csrp.csrp.dto.request.SignInRequestDTO;
 import com.csrp.csrp.dto.request.SignUpRequestDTO;
+import com.csrp.csrp.dto.request.UserDeleteRequestDTO;
 import com.csrp.csrp.dto.request.UserInfoModifyRequestDTO;
 import com.csrp.csrp.dto.response.SignInResponseDTO;
 import com.csrp.csrp.dto.response.UserInfoModifyResponseDTO;
@@ -55,5 +56,15 @@ public class UserController {
 
     UserInfoModifyResponseDTO userInfoModifyResponseDTO = userService.userInfoModify(userInfoModify, profileImage, tokenUserInfo);
     return ResponseEntity.ok().body(userInfoModifyResponseDTO);
+  }
+
+  // 회원정보 삭제
+  @DeleteMapping("/delete")
+  public ResponseEntity<?>userDelete(
+      @RequestBody @Validated UserDeleteRequestDTO userDeleteRequestDTO,
+      @AuthenticationPrincipal TokenUserInfo tokenUserInfo
+      ) {
+    boolean result = userService.userDelete(userDeleteRequestDTO, tokenUserInfo);
+    return ResponseEntity.ok().body(result);
   }
 }
