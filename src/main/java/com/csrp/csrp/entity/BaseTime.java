@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class BaseTime {
 
-  @CreatedDate
-  @Column(updatable = false,nullable = false)
-  private LocalDateTime createdAt;
+    @CreatedDate
+    @Column(updatable = false,nullable = false)
+    private LocalDateTime createdAt;
 
-  @LastModifiedDate
-  @Column(nullable = false)
-  private LocalDateTime modifiedAt;
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime modifiedAt;
 }

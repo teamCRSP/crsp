@@ -32,4 +32,5 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(e.getHttpStatus()).body(new ErrorResponse(e.getErrorCode(), e.getHttpStatus(), e.getDivisionCode(), e.getErrorMessage()));
   }
 
+
 }
