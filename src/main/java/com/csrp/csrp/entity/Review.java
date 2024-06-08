@@ -7,9 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Getter
 @Builder
@@ -31,6 +28,9 @@ public class Review extends BaseTime {
 
   @Column(name = "sanction", nullable = false)
   private boolean sanction = false;
+
+  @Column(name = "review_warning_count", nullable = false)
+  private int reviewWarningCount = 0;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")

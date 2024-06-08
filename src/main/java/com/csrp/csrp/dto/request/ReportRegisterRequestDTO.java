@@ -29,6 +29,27 @@ public class ReportRegisterRequestDTO {
         .id(reportAccepted.getId())
         .warningCount(warningCount)
         .user(user)
+        .compareDate(reportAccepted.getCompareDate())
+        .build();
+  }
+  public Review toReview(Review review) {
+    return Review.builder()
+        .id(review.getId())
+        .rating(review.getRating())
+        .content(review.getContent())
+        .sanction(true)
+        .reviewWarningCount(review.getReviewWarningCount())
+        .user(review.getUser())
+        .build();
+  }
+  public Review addReviewWarningCount(Review review) {
+    return Review.builder()
+        .id(review.getId())
+        .rating(review.getRating())
+        .content(review.getContent())
+        .sanction(review.isSanction())
+        .reviewWarningCount(review.getReviewWarningCount() + 1)
+        .user(review.getUser())
         .build();
   }
 }

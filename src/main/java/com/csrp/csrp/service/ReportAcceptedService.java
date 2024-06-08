@@ -1,6 +1,7 @@
 package com.csrp.csrp.service;
 
 import com.csrp.csrp.dto.request.ReportRegisterRequestDTO;
+import com.csrp.csrp.dto.response.ReportShowResponseDTO;
 import com.csrp.csrp.entity.ReportAccepted;
 import com.csrp.csrp.entity.Review;
 import com.csrp.csrp.entity.User;
@@ -34,42 +35,55 @@ public class ReportAcceptedService {
 
     userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    Long reviewId = reportRegisterRequestDTO.getReviewId();
-    Review review = reviewRepository.findById(reviewId)
+    Review review = reviewRepository.findById(reportRegisterRequestDTO.getReviewId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_REVIEW));
     User user = review.getUser();
     ReportAccepted reportAccepted = reportAcceptedRepository.findByUser(user);
 
-    if (reportAccepted == null) {
-      ReportAccepted entity = reportRegisterRequestDTO.toEntity(user, 1);
-      reportAcceptedRepository.save(entity);
-    } else {
-      int warningCount = reportAccepted.getWarningCount();
-      if (warningCount >= 3 && !review.isSanction()) {  // 신고 누적이 3이상이거나 제제가 아닐때
-        Review build = Review.builder() // 리뷰 sanction true 변환
-            .id(review.getId())
-            .rating(review.getRating())
-            .content(review.getContent())
-            .sanction(true)
-            .user(review.getUser())
-            .build();
-        reviewRepository.save(build);
+    Review addReviewWarningCount = reportRegisterRequestDTO.addReviewWarningCount(review);  // 리뷰 신고누적횟수 1 증가
+    Review save = reviewRepository.save(addReviewWarningCount);
 
-      } else if (warningCount <= 2) { // 신고 누적이 2이하일때 누적 개수가 1증가
-        ReportAccepted entity = reportRegisterRequestDTO.toModifyEntity(user, warningCount + 1, reportAccepted);
+    if (!save.isSanction() && save.getReviewWarningCount() >= 3) {
+      Review build = reportRegisterRequestDTO.toReview(save);     // 리뷰 제제를 true 변환
+      reviewRepository.save(build);
+    }
+
+    int findReviewCount = reviewRepository.countByUserAndSanctionIsTrue(user);// 해당 회원에 대한 제제 값이 true인 데이터의 개수
+    if (reportAccepted == null && findReviewCount >= 1) {  // 리뷰 제제가 true인 데이터 개수 1이상 그리고 신고 접수가 없을때
+      ReportAccepted entity = reportRegisterRequestDTO.toEntity(user, findReviewCount);
+      entity.setCompareDate(null);
+      reportAcceptedRepository.save(entity);
+    } else if (reportAccepted != null && findReviewCount >=1){
+        ReportAccepted entity = reportRegisterRequestDTO.toModifyEntity(user, findReviewCount, reportAccepted);
+        if (entity.getWarningCount() == 3) {  // 신고누적횟수가 3일때 비교 날짜 생성
+          entity.setCompareDate(LocalDateTime.now());   // 스캐줄러를 이용하기 위한 비교 날짜
+        }
         reportAcceptedRepository.save(entity);
-      }
     }
     return true;
   }
 
-  //누적횟수가 3이고 일주일 지나면 자동 삭제
+  //누적횟수가 3이상이고 일주일 지나면 자동 삭제
   @Async
   @Scheduled(cron = "0 0 0 * * *")   // 매일 자정에 실행
   public void AutomaticDeleteReportAccepted() {
-    List<ReportAccepted> findAcceptedList = reportAcceptedRepository.findByWarningCountAndModifiedAt(3, LocalDateTime.now().minusDays(7));
+    List<ReportAccepted> findAcceptedList = reportAcceptedRepository.findByCompareDate(LocalDateTime.now().minusDays(7));
     for (ReportAccepted reportAccepted : findAcceptedList) {
       reportAcceptedRepository.delete(reportAccepted);
     }
+  }
+
+  // 신고 누적횟수 보기
+  public ReportShowResponseDTO reportShow(TokenUserInfo tokenUserInfo) {
+    User user = userRepository.findById(tokenUserInfo.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
+    ReportAccepted accepted = reportAcceptedRepository.findByUser(user);
+    List<Review> reviewList = reviewRepository.findByUserAndSanction(user, true); // 해당 회원의 제제 된 리뷰 리스트
+    if (accepted == null) {
+      return new ReportShowResponseDTO(0, user, reviewList);
+    }
+    int warningCount = accepted.getWarningCount();
+
+    return new ReportShowResponseDTO(warningCount, user, reviewList);
   }
 }
