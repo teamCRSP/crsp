@@ -13,13 +13,13 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ConcertException extends RuntimeException{
+public class DbException extends RuntimeException{
 
   private ErrorCode errorCode;
   private HttpStatus httpStatus;
   private String errorMessage;
 
-  public ConcertException(ErrorCode errorCode){
+  public DbException(ErrorCode errorCode){
     this.errorCode = errorCode;
     this.httpStatus = errorCode.getHttpStatus();
     this.errorMessage = errorCode.getErrorMessage();
