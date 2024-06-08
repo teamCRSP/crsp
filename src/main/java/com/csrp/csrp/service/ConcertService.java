@@ -2,13 +2,13 @@ package com.csrp.csrp.service;
 
 import java.util.UUID;
 
+import com.csrp.csrp.exception.CustomException;
 import com.csrp.csrp.form.ConcertUpdateForm;
 import org.springframework.web.multipart.MultipartFile;
 import com.csrp.csrp.entity.ConcertDateInfo;
 import com.csrp.csrp.entity.ConcertInfo;
 import com.csrp.csrp.entity.ConcertLocInfo;
 import com.csrp.csrp.entity.ConcertSeatInfo;
-import com.csrp.csrp.exception.ConcertException;
 import com.csrp.csrp.form.ConcertForm;
 import com.csrp.csrp.repository.ConcertDateInfoRepository;
 import com.csrp.csrp.repository.ConcertInfoRepository;
@@ -75,7 +75,7 @@ public class ConcertService {
 
     // 존재하지 않는 콘서트에 대해 업데이트 시도하는 경우
     concertInfoRepository.findById(form.getId())
-            .orElseThrow(() -> new ConcertException(ErrorCode.CONCERT_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
 
     String concertImagePath = uploadProfileImage(profileImage);
     ConcertInfo update = form.from(form, concertImagePath);
