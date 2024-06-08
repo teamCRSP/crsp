@@ -32,7 +32,10 @@ public enum ErrorCode {
   NOT_EXISTS_USER_EMAIL(HttpStatus.NOT_FOUND, "U-002", "회원 이메일이 존재하지 않습니다."),
   NOT_ACCORD_USER_PASSWORD(HttpStatus.BAD_REQUEST, "U-003", "패스워드가 맞지 않습니다."),
   NOT_EXISTS_USER(HttpStatus.NOT_FOUND, "U-004", "회원이 존재하지 않습니다."),
-  NOT_ACCORD_USER_EMAIL(HttpStatus.BAD_REQUEST, "U-005", "이메일이 맞지 않습니다.");
+  NOT_ACCORD_USER_EMAIL(HttpStatus.BAD_REQUEST, "U-005", "이메일이 맞지 않습니다."),
+
+  // REVIEW
+  NOT_EXISTS_REVIEW(HttpStatus.NOT_FOUND, "R-001", "리뷰가 존재하지 않습니다.");
 
   private final HttpStatus httpStatus;
   private final String divisionCode;
