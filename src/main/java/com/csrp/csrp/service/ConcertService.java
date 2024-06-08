@@ -1,6 +1,5 @@
 package com.csrp.csrp.service;
 
-import com.csrp.csrp.exception.DbException;
 import java.util.UUID;
 
 import com.csrp.csrp.form.ConcertUpdateForm;
@@ -16,8 +15,6 @@ import com.csrp.csrp.repository.ConcertInfoRepository;
 import com.csrp.csrp.repository.ConcertLocInfoRepository;
 import com.csrp.csrp.repository.ConcertSeatInfoRepository;
 import com.csrp.csrp.type.ErrorCode;
-import java.util.HashMap;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,10 +79,9 @@ public class ConcertService {
 
     String concertImagePath = uploadProfileImage(profileImage);
     ConcertInfo update = form.from(form, concertImagePath);
-    ConcertInfo concertInfo = concertInfoRepository.save(update);
 
 
-    // 콘서트 제목, 개최일시, 장소 3개의 정보가 일치할 경우만 update 가능
+      // 콘서트 제목, 개최일시, 장소 3개의 정보가 일치할 경우만 update 가능
 
 //    int result = modifyConcertInfo(form, concertImagePath);
 //
@@ -98,7 +94,7 @@ public class ConcertService {
 //        form.getTitle(), form.getLocation(), form.getDate())
 //        .orElseThrow(()->new DbException(ErrorCode.DATABASE_SELECT_FAIL));
 
-    return concertInfo;
+    return concertInfoRepository.save(update);
   }
 
 //  @Transactional

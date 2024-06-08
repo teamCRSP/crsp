@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -48,17 +47,6 @@ public class ConcertSeatInfo {
   public static ConcertSeatInfo from(ConcertForm form, ConcertInfo concertInfo){
     return ConcertSeatInfo.builder()
         .concertInfo(concertInfo)
-        .seatS(form.getSeatS())
-        .seatSPrice(form.getSeatSPrice())
-        .seatA(form.getSeatAPrice())
-        .seatAPrice(form.getSeatAPrice())
-        .seatB(form.getSeatB())
-        .seatBPrice(form.getSeatBPrice())
-        .build();
-  }
-
-  public static ConcertSeatInfo of(AddConcertSeatForm form){
-    return ConcertSeatInfo.builder()
         .seatS(form.getSeatS())
         .seatSPrice(form.getSeatSPrice())
         .seatA(form.getSeatAPrice())
