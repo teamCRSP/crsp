@@ -1,9 +1,10 @@
 package com.csrp.csrp.service;
 
+import com.csrp.csrp.dto.request.AllReviewPageDTO;
 import com.csrp.csrp.dto.request.MyReviewPageDTO;
 import com.csrp.csrp.dto.request.ReviewListResponseDTO;
 import com.csrp.csrp.dto.request.ReviewRegisterRequestDTO;
-import com.csrp.csrp.dto.response.MyReviewResponseDTO;
+import com.csrp.csrp.dto.response.ReviewDetailResponseDTO;
 import com.csrp.csrp.dto.response.PageResponseDTO;
 import com.csrp.csrp.entity.ConcertInfo;
 import com.csrp.csrp.entity.Review;
@@ -55,13 +56,30 @@ public class ReviewService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
     Page<Review> byUser = reviewRepository.findByUser(user, pageRequest);
 
-    List<MyReviewResponseDTO> reveiwList = byUser.stream().map(MyReviewResponseDTO::new).toList();
+    List<ReviewDetailResponseDTO> reveiwList = byUser.stream().map(ReviewDetailResponseDTO::new).toList();
 
 
     return ReviewListResponseDTO.builder()
         .count(reveiwList.size())
         .pageResponseDTO(new PageResponseDTO<Review>(byUser))
         .reviews(reveiwList)
+        .build();
+  }
+
+  // 전체 리뷰 보여주기
+  public ReviewListResponseDTO AllReview(AllReviewPageDTO allReviewPageDTO) {
+    PageRequest pageRequest = PageRequest.of(
+        allReviewPageDTO.getPage() - 1,
+        allReviewPageDTO.getSize(),
+        Sort.by("id").descending()
+    );
+    Page<Review> all = reviewRepository.findAll(pageRequest);
+    List<ReviewDetailResponseDTO> reviewList = all.stream().map(ReviewDetailResponseDTO::new).toList();
+
+    return ReviewListResponseDTO.builder()
+        .count(reviewList.size())
+        .pageResponseDTO(new PageResponseDTO<Review>(all))
+        .reviews(reviewList)
         .build();
   }
 }

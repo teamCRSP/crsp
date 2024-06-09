@@ -29,7 +29,7 @@ public class WebSecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
             authorize -> authorize
-                .requestMatchers("/user/signUp", "/user/signIn").permitAll()
+                .requestMatchers("/user/signUp", "/user/signIn", "/review/reviewList").permitAll()
                 .anyRequest().authenticated()
         )
         .httpBasic(Customizer.withDefaults())

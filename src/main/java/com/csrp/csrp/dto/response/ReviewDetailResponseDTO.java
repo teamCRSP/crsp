@@ -8,23 +8,28 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MyReviewResponseDTO {
+public class ReviewDetailResponseDTO {
 
   private String content;
 
   private int rating;
 
+  private LocalDateTime createdAt;
+
   private ConcertInfo concertInfo;
 
   private User user;
 
-  public MyReviewResponseDTO(Review review) {
+  public ReviewDetailResponseDTO(Review review) {
     this.content = review.getContent();
     this.rating = review.getRating();
+    this.createdAt = review.getCreatedAt();
     this.concertInfo = review.getConcertInfo();
     this.user = review.getUser();
   }

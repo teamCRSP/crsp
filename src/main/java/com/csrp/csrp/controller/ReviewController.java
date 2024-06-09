@@ -1,5 +1,6 @@
 package com.csrp.csrp.controller;
 
+import com.csrp.csrp.dto.request.AllReviewPageDTO;
 import com.csrp.csrp.dto.request.MyReviewPageDTO;
 import com.csrp.csrp.dto.request.ReviewListResponseDTO;
 import com.csrp.csrp.dto.request.ReviewRegisterRequestDTO;
@@ -33,5 +34,12 @@ public class ReviewController {
                                     @AuthenticationPrincipal TokenUserInfo tokenUserInfo) {
     ReviewListResponseDTO myReviewResponseDTO = reviewService.myReview(tokenUserInfo, myReviewPageDTO);
     return ResponseEntity.ok().body(myReviewResponseDTO);
+  }
+
+  // 전체 리뷰 정보 보기
+  @GetMapping("/reviewList")
+  public ResponseEntity<?> AllReview(@Validated @RequestBody AllReviewPageDTO allReviewPageDTO) {
+    ReviewListResponseDTO reviewListResponseDTO = reviewService.AllReview(allReviewPageDTO);
+    return ResponseEntity.ok().body(reviewListResponseDTO);
   }
 }

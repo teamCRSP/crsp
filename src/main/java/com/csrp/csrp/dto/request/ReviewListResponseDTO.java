@@ -1,6 +1,6 @@
 package com.csrp.csrp.dto.request;
 
-import com.csrp.csrp.dto.response.MyReviewResponseDTO;
+import com.csrp.csrp.dto.response.ReviewDetailResponseDTO;
 import com.csrp.csrp.dto.response.PageResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,5 +16,5 @@ import java.util.List;
 public class ReviewListResponseDTO {
   private int count;
   private PageResponseDTO pageResponseDTO;
-  private List<MyReviewResponseDTO> reviews;
+  private List<ReviewDetailResponseDTO> reviews;
 }
