@@ -6,6 +6,7 @@ import com.csrp.csrp.dto.request.UserDeleteRequestDTO;
 import com.csrp.csrp.dto.request.UserInfoModifyRequestDTO;
 import com.csrp.csrp.dto.response.SignInResponseDTO;
 import com.csrp.csrp.dto.response.UserInfoModifyResponseDTO;
+import com.csrp.csrp.dto.response.UserShowResponseDTO;
 import com.csrp.csrp.service.UserService;
 import com.csrp.csrp.token.TokenUserInfo;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +67,14 @@ public class UserController {
       ) {
     boolean result = userService.userDelete(userDeleteRequestDTO, tokenUserInfo);
     return ResponseEntity.ok().body(result);
+  }
+
+  // 회원정보 뷰
+  @GetMapping("/show")
+  public ResponseEntity<?> userShow(
+      @AuthenticationPrincipal TokenUserInfo tokenUserInfo
+  ) {
+    UserShowResponseDTO userShowResponseDTO = userService.userShow(tokenUserInfo);
+    return ResponseEntity.ok().body(userShowResponseDTO);
   }
 }
