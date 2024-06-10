@@ -30,10 +30,7 @@ public class UserController {
       @RequestPart("user") @Validated SignUpRequestDTO signUpRequestDTO,
       @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
   ) {
-    String profilePath = null;
-    if (profileImage != null) {
-      profilePath = userService.uploadProfileImage(profileImage);
-    }
+
     boolean result = userService.SignUp(signUpRequestDTO, profileImage);
     return ResponseEntity.ok().body(result);
   }
