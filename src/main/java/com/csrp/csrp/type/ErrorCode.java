@@ -40,11 +40,8 @@ public enum ErrorCode {
   // INQUIRY
   NOT_EXISTS_INQUIRY(HttpStatus.NOT_FOUND, "I-001", "문의가 없습니다."),
 
-  // ANSWER
-  NOT_EXISTS_ANSWER(HttpStatus.NOT_FOUND, "A-001", "답변이 없습니다."),
-
-  // ReportAccepted
-  REVIEW_STOP(HttpStatus.FOUND, "RA-001", "3번 이상 신고가 누적 되어 리뷰 등록이 정지되었습니다.");
+  //ANSWER
+  NOT_EXISTS_ANSWER(HttpStatus.NOT_FOUND, "A-001", "답변이 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String divisionCode;
