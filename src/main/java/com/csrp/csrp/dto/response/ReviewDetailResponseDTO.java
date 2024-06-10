@@ -38,10 +38,6 @@ public class ReviewDetailResponseDTO {
 
   private Role role;
 
-
-
-
-
   public ReviewDetailResponseDTO(Review review) {
     this.content = review.getContent();
     this.rating = review.getRating();
