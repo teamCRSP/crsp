@@ -41,7 +41,7 @@ public class InquiryService {
   public boolean inquiryRegister(inquiryRegisterRequestDTO inquiryRegisterRequestDTO, TokenUserInfo tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    ConcertInfo concertInfo = concertInfoRepository.findById(inquiryRegisterRequestDTO.getConcertInfo().getId())
+    ConcertInfo concertInfo = concertInfoRepository.findById(inquiryRegisterRequestDTO.getConcertInfoId())
         .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
     Inquiry entity = inquiryRegisterRequestDTO.toEntity(inquiryRegisterRequestDTO, user, concertInfo);
     inquiryRepository.save(entity);

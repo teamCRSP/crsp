@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class inquiryRegisterRequestDTO {
   @NotNull
-  private ConcertInfo concertInfo;
+  private Long concertInfoId;
 
   @NotBlank
   @Size(min = 1, max = 1000)
