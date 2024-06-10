@@ -1,10 +1,12 @@
 package com.csrp.csrp.entity;
 
+import com.csrp.csrp.type.ReviewStopStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 @Entity
@@ -31,6 +33,11 @@ public class Review extends BaseTime {
 
   @Column(name = "review_warning_count", nullable = false)
   private int reviewWarningCount = 0;
+
+  @Column(name = "review_stop_status", nullable = false)
+  @Enumerated(EnumType.STRING)
+  @ColumnDefault("'NO'")
+  private ReviewStopStatus reviewStopStatus;  // 정지 이력
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
