@@ -1,7 +1,6 @@
 package com.csrp.csrp.controller;
 
 import com.csrp.csrp.dto.request.inquiryRegisterRequestDTO;
-import com.csrp.csrp.repository.InquiryRepository;
 import com.csrp.csrp.service.InquiryService;
 import com.csrp.csrp.token.TokenUserInfo;
 import lombok.RequiredArgsConstructor;
