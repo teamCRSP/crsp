@@ -1,6 +1,6 @@
 package com.csrp.csrp.entity;
 
-import com.csrp.csrp.type.answerState;
+import com.csrp.csrp.type.AnswerState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +28,7 @@ public class Answer extends BaseTime{
   @Column(name = "answer_state", nullable = false)
   @Enumerated(EnumType.STRING)
   @ColumnDefault("'PENDING'")
-  private answerState answerState;
+  private AnswerState answerState;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
