@@ -2,15 +2,8 @@ package com.csrp.csrp.entity;
 
 import com.csrp.csrp.form.ConcertForm;
 import com.csrp.csrp.type.ConcertType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -67,6 +60,9 @@ public class ConcertInfo extends BaseTime {
   @Column(name = "CONCERTTYPE")
   private ConcertType concertType;
 
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 
   public static ConcertInfo from(ConcertForm form, String concertImagePath){
 
