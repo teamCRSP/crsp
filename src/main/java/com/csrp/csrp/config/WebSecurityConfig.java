@@ -30,7 +30,7 @@ public class WebSecurityConfig {
         .authorizeHttpRequests(
             authorize -> authorize
                 .requestMatchers("/user/signUp", "/user/signIn", "/review/reviewList"
-                , "/inquiry/inquiryList").permitAll()
+                , "/inquiry/inquiryList", "/love/**").permitAll()
                 .anyRequest().authenticated()
         )
         .httpBasic(Customizer.withDefaults())
