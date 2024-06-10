@@ -38,8 +38,10 @@ public enum ErrorCode {
   NOT_EXISTS_REVIEW(HttpStatus.NOT_FOUND, "R-001", "리뷰가 존재하지 않습니다."),
 
   // INQUIRY
-  NOT_EXISTS_INQUIRY(HttpStatus.NOT_FOUND, "I-001", "문의가 없습니다.");
+  NOT_EXISTS_INQUIRY(HttpStatus.NOT_FOUND, "I-001", "문의가 없습니다."),
 
+  //ANSWER
+  NOT_EXISTS_ANSWER(HttpStatus.NOT_FOUND, "A-001", "답변이 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String divisionCode;
