@@ -60,7 +60,7 @@ public class ConcertInfo extends BaseTime {
   @Column(name = "CONCERTTYPE")
   private ConcertType concertType;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
