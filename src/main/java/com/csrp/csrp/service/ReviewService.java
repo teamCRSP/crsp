@@ -1,9 +1,6 @@
 package com.csrp.csrp.service;
 
-import com.csrp.csrp.dto.request.AllReviewPageDTO;
-import com.csrp.csrp.dto.request.MyReviewPageDTO;
-import com.csrp.csrp.dto.request.ReviewListResponseDTO;
-import com.csrp.csrp.dto.request.ReviewRegisterRequestDTO;
+import com.csrp.csrp.dto.request.*;
 import com.csrp.csrp.dto.response.ReviewDetailResponseDTO;
 import com.csrp.csrp.dto.response.PageResponseDTO;
 import com.csrp.csrp.entity.ConcertInfo;
@@ -21,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +31,7 @@ public class ReviewService {
   private final ReviewRepository reviewRepository;
   private final UserRepository userRepository;
   private final ConcertInfoRepository concertInfoRepository;
+  private final PasswordEncoder encoder;
 
   // 리뷰 등록
   public boolean reviewRegister(ReviewRegisterRequestDTO reviewRegisterRequestDTO, TokenUserInfo tokenUserInfo) {
@@ -81,5 +80,36 @@ public class ReviewService {
         .pageResponseDTO(new PageResponseDTO<Review>(all))
         .reviews(reviewList)
         .build();
+  }
+
+  public boolean reviewDelete(ReviewDeleteRequestDTO reviewDeleteRequestDTO, TokenUserInfo tokenUserInfo) {
+    User user = userRepository.findById(tokenUserInfo.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
+    if (!user.getEmail().equals(tokenUserInfo.getEmail())) {
+      throw new CustomException(ErrorCode.NOT_ACCORD_USER_EMAIL);
+    }
+    String inputPassword = reviewDeleteRequestDTO.getPassword();
+    String encoderPassword = user.getPassword();
+
+    if (!encoder.matches(inputPassword, encoderPassword)) {
+      throw new CustomException(ErrorCode.NOT_ACCORD_USER_PASSWORD);
+    }
+    reviewRepository.deleteById(user.getId());
+    return true;
+  }
+
+  public boolean reviewModify(ReviewModifyRequestDTO reviewModifyRequestDTO, TokenUserInfo tokenUserInfo) {
+    User user = userRepository.findById(tokenUserInfo.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
+    Long concertId = reviewModifyRequestDTO.getConcertInfo().getId();
+    ConcertInfo concertInfo = concertInfoRepository.findById(concertId)
+        .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
+    Review review = reviewRepository.findById(reviewModifyRequestDTO.getReviewId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_REVIEW));
+    Review entity = reviewModifyRequestDTO.toEntity(reviewModifyRequestDTO, review, user, concertInfo);
+    reviewRepository.save(entity);
+
+    return true;
+
   }
 }

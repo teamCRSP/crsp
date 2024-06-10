@@ -1,9 +1,6 @@
 package com.csrp.csrp.controller;
 
-import com.csrp.csrp.dto.request.AllReviewPageDTO;
-import com.csrp.csrp.dto.request.MyReviewPageDTO;
-import com.csrp.csrp.dto.request.ReviewListResponseDTO;
-import com.csrp.csrp.dto.request.ReviewRegisterRequestDTO;
+import com.csrp.csrp.dto.request.*;
 import com.csrp.csrp.service.ReviewService;
 import com.csrp.csrp.token.TokenUserInfo;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +38,21 @@ public class ReviewController {
   public ResponseEntity<?> AllReview(@Validated @RequestBody AllReviewPageDTO allReviewPageDTO) {
     ReviewListResponseDTO reviewListResponseDTO = reviewService.AllReview(allReviewPageDTO);
     return ResponseEntity.ok().body(reviewListResponseDTO);
+  }
+
+  // 리뷰 삭제
+  @DeleteMapping("/delete")
+  public ResponseEntity<?> reviewDelete(@Validated @RequestBody ReviewDeleteRequestDTO reviewDeleteRequestDTO,
+                                        @AuthenticationPrincipal TokenUserInfo tokenUserInfo) {
+    boolean result = reviewService.reviewDelete(reviewDeleteRequestDTO, tokenUserInfo);
+    return ResponseEntity.ok().body(result);
+  }
+
+  // 리뷰 수정
+  @RequestMapping(value = "/modify", method = {RequestMethod.PATCH, RequestMethod.PUT})
+  public ResponseEntity<?> reviewModify(@Validated @RequestBody ReviewModifyRequestDTO reviewModifyRequestDTO,
+                                        @AuthenticationPrincipal TokenUserInfo tokenUserInfo) {
+    boolean result = reviewService.reviewModify(reviewModifyRequestDTO, tokenUserInfo);
+    return ResponseEntity.ok().body(result);
   }
 }
