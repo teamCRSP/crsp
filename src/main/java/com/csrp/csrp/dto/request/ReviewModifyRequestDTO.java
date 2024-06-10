@@ -28,7 +28,7 @@ public class ReviewModifyRequestDTO {
   private int rating;
 
   @NotNull
-  private ConcertInfo concertInfo;
+  private Long concertInfoId;
 
   public Review toEntity(ReviewModifyRequestDTO reviewModifyRequestDTO, Review review, User user, ConcertInfo concertInfo) {
     return Review.builder()

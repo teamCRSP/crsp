@@ -37,7 +37,7 @@ public class ReviewService {
   public boolean reviewRegister(ReviewRegisterRequestDTO reviewRegisterRequestDTO, TokenUserInfo tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    ConcertInfo concertInfo = concertInfoRepository.findById(reviewRegisterRequestDTO.getConcertInfo().getId())
+    ConcertInfo concertInfo = concertInfoRepository.findById(reviewRegisterRequestDTO.getConcertInfoId())
         .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
     Review review = reviewRegisterRequestDTO.ToEntity(reviewRegisterRequestDTO,concertInfo, user);
     reviewRepository.save(review);
@@ -101,7 +101,7 @@ public class ReviewService {
   public boolean reviewModify(ReviewModifyRequestDTO reviewModifyRequestDTO, TokenUserInfo tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    Long concertId = reviewModifyRequestDTO.getConcertInfo().getId();
+    Long concertId = reviewModifyRequestDTO.getConcertInfoId();
     ConcertInfo concertInfo = concertInfoRepository.findById(concertId)
         .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
     Review review = reviewRepository.findById(reviewModifyRequestDTO.getReviewId())

@@ -22,7 +22,7 @@ public class ReviewRegisterRequestDTO {
   private int rating;
 
   @NotNull
-  private ConcertInfo concertInfo;
+  private Long concertInfoId;
 
   public Review ToEntity(ReviewRegisterRequestDTO reviewRegisterRequestDTO, ConcertInfo concertInfo, User user) {
     return Review.builder()
