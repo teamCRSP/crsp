@@ -24,8 +24,8 @@ public class Love extends BaseTime {
   @JoinColumn(name = "user_id")
   private User user;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "concert_id")
-//  private ConcertInfo concertInfo;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "concert_id")
+  private ConcertInfo concertInfo;
 
 }

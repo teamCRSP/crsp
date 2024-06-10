@@ -6,6 +6,7 @@ import com.csrp.csrp.dto.request.UserDeleteRequestDTO;
 import com.csrp.csrp.dto.request.UserInfoModifyRequestDTO;
 import com.csrp.csrp.dto.response.SignInResponseDTO;
 import com.csrp.csrp.dto.response.UserInfoModifyResponseDTO;
+import com.csrp.csrp.dto.response.UserShowResponseDTO;
 import com.csrp.csrp.entity.User;
 import com.csrp.csrp.exception.CustomException;
 import com.csrp.csrp.repository.UserRepository;
@@ -80,7 +81,7 @@ public class UserService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
     // 파일명 변경
     String profileImagePath = uploadProfileImage(profileImage);
-    User modifyUser = userInfoModifyRequestDTO.modifyUser(user, userInfoModifyRequestDTO, profileImagePath);
+    User modifyUser = userInfoModifyRequestDTO.toModifyEntity(user, userInfoModifyRequestDTO, profileImagePath);
     User save = userRepository.save(modifyUser);
 
     return new UserInfoModifyResponseDTO(save);
@@ -100,5 +101,12 @@ public class UserService {
     }
     userRepository.deleteById(user.getId());
     return true;
+  }
+
+  // 회원정보 보여주기
+  public UserShowResponseDTO userShow(TokenUserInfo tokenUserInfo) {
+    User user = userRepository.findById(tokenUserInfo.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
+    return new UserShowResponseDTO(user);
   }
 }

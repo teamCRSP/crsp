@@ -39,6 +39,7 @@ public class ReportRegisterRequestDTO {
         .content(review.getContent())
         .sanction(true)
         .reviewWarningCount(review.getReviewWarningCount())
+        .concertInfo(review.getConcertInfo())
         .user(review.getUser())
         .build();
   }
@@ -49,6 +50,7 @@ public class ReportRegisterRequestDTO {
         .content(review.getContent())
         .sanction(review.isSanction())
         .reviewWarningCount(review.getReviewWarningCount() + 1)
+        .concertInfo(review.getConcertInfo())
         .user(review.getUser())
         .build();
   }

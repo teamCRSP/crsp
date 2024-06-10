@@ -14,8 +14,6 @@ import com.csrp.csrp.type.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -61,16 +59,6 @@ public class ReportAcceptedService {
         reportAcceptedRepository.save(entity);
     }
     return true;
-  }
-
-  //누적횟수가 3이상이고 일주일 지나면 자동 삭제
-  @Async
-  @Scheduled(cron = "0 0 0 * * *")   // 매일 자정에 실행
-  public void AutomaticDeleteReportAccepted() {
-    List<ReportAccepted> findAcceptedList = reportAcceptedRepository.findByCompareDate(LocalDateTime.now().minusDays(7));
-    for (ReportAccepted reportAccepted : findAcceptedList) {
-      reportAcceptedRepository.delete(reportAccepted);
-    }
   }
 
   // 신고 누적횟수 보기

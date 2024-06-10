@@ -25,7 +25,7 @@ public class UserInfoModifyRequestDTO {
   @NotBlank
   private String address;
 
-  public User modifyUser(User user, UserInfoModifyRequestDTO userInfoModifyRequestDTO, String profileImagePath) {
+  public User toModifyEntity(User user, UserInfoModifyRequestDTO userInfoModifyRequestDTO, String profileImagePath) {
     return User.builder()
         .id(user.getId())
         .email(user.getEmail())
