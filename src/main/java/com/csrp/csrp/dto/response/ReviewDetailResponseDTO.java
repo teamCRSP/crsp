@@ -3,6 +3,8 @@ package com.csrp.csrp.dto.response;
 import com.csrp.csrp.entity.ConcertInfo;
 import com.csrp.csrp.entity.Review;
 import com.csrp.csrp.entity.User;
+import com.csrp.csrp.type.ConcertType;
+import com.csrp.csrp.type.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,15 +24,34 @@ public class ReviewDetailResponseDTO {
 
   private LocalDateTime createdAt;
 
-  private ConcertInfo concertInfo;
+  private String title;
 
-  private User user;
+  private String concertImage;
+
+  private ConcertType concertType;
+
+  private String name;
+
+  private int age;
+
+  private String profileImage;
+
+  private Role role;
+
+
+
+
 
   public ReviewDetailResponseDTO(Review review) {
     this.content = review.getContent();
     this.rating = review.getRating();
     this.createdAt = review.getCreatedAt();
-    this.concertInfo = review.getConcertInfo();
-    this.user = review.getUser();
+    this.title = review.getConcertInfo().getTitle();
+    this.concertType = review.getConcertInfo().getConcertType();
+    this.concertImage = review.getConcertInfo().getConcertImage();
+    this.name = review.getUser().getName();
+    this.age = review.getUser().getAge();
+    this.profileImage = review.getUser().getProfileImage();
+    this.role = review.getUser().getRole();
   }
 }
