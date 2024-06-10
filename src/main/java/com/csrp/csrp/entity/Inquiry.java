@@ -33,9 +33,9 @@ public class Inquiry extends BaseTime{
   @JoinColumn(name = "user_id")
   private User user;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "concert_id")
-//  ConcertInfo concertInfo;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "concert_id")
+  ConcertInfo concertInfo;
 
   @OneToOne(mappedBy = "inquiry", cascade = CascadeType.REMOVE)
   private Answer answer = new Answer();
