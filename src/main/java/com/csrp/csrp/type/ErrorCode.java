@@ -25,7 +25,7 @@ public enum ErrorCode {
   DATABASE_SELECT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"D-002", "조회 실패"),
 
   // Request dto 로 데이터가 전달되지 않을 경우
-  MISSING_REQUEST_DTO_ERROR(HttpStatus.NOT_FOUND, "I-001", "DTO 값이 없습니다."),
+  MISSING_REQUEST_DTO_ERROR(HttpStatus.NOT_FOUND, "ALL-001", "DTO 값이 없습니다."),
 
   // USER
   EXISTS_USER_EMAIL(HttpStatus.BAD_REQUEST, "U-001", "이메일이 존재합니다."),
@@ -35,7 +35,10 @@ public enum ErrorCode {
   NOT_ACCORD_USER_EMAIL(HttpStatus.BAD_REQUEST, "U-005", "이메일이 맞지 않습니다."),
 
   // REVIEW
-  NOT_EXISTS_REVIEW(HttpStatus.NOT_FOUND, "R-001", "리뷰가 존재하지 않습니다.");
+  NOT_EXISTS_REVIEW(HttpStatus.NOT_FOUND, "R-001", "리뷰가 존재하지 않습니다."),
+
+  // INQUIRY
+  NOT_EXISTS_INQUIRY(HttpStatus.NOT_FOUND, "I-001", "문의가 없습니다.");
 
 
   private final HttpStatus httpStatus;
