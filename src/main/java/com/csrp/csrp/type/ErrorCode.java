@@ -21,6 +21,10 @@ public enum ErrorCode {
     // CONCERT
   CONCERT_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"C-001", "이미 개최된 콘서트 존재"),
   CONCERT_NOT_FOUND(HttpStatus.BAD_REQUEST,"C-002", "존재하지 않는 콘서트"),
+  CONCERT_DATE_NOT_VALID(HttpStatus.BAD_REQUEST, "C-003", "종료일이 개최일 보다 이전입니다"),
+  CONCERT_LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "C-004", "콘서트 위치가 존재안함"),
+  CONCERT_DATE_NOT_FOUND(HttpStatus.BAD_REQUEST, "C-005", "콘서트 날짜 존재 안함"),
+  CONCERT_SEAT_NOT_FOUND(HttpStatus.BAD_REQUEST, "C-006", "콘서트 좌석 존재 안함"),
   DATABASE_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"D-001", "업데이트 실패"),
   DATABASE_SELECT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"D-002", "조회 실패"),
 

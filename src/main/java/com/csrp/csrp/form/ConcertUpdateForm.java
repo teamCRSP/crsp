@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -33,12 +35,16 @@ public class ConcertUpdateForm {
     @NotNull(message = "콘서트 가격 작성")
     private Integer amount;
 
-    @NotNull(message = "콘서트 개최날 작성")
+    @NotNull(message = "콘서트 개최일시 작성")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime date;
+    private LocalDateTime startDate;
+
+    @NotNull(message = "콘서트 종료일시 작성")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime endDate;
 
     @NotNull(message = "콘서트 개최 위치 작성")
-    private String location;
+    private List<String> location = new ArrayList<>();
 
     @NotNull(message = "콘서트 타입(종류) 작성")
     private ConcertType concertType;
@@ -75,8 +81,8 @@ public class ConcertUpdateForm {
                 .artist(form.getArtist())
                 .description(form.getDescription())
                 .amount(form.getAmount())
-                .date(form.getDate())
-                .location(form.getLocation())
+                .startDate(form.getStartDate())
+                .endDate(form.getEndDate())
                 .concertImage(concertImagePath)
                 .likeCount(0)
                 .reviewCount(0)

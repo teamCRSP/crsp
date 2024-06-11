@@ -1,6 +1,5 @@
 package com.csrp.csrp.controller;
 
-import com.csrp.csrp.entity.ConcertInfo;
 import com.csrp.csrp.form.ConcertForm;
 import com.csrp.csrp.form.ConcertUpdateForm;
 import com.csrp.csrp.service.ConcertService;
@@ -27,14 +26,12 @@ public class ConcertController {
       @RequestPart(value = "concertImage", required = false) MultipartFile concertImage
   ){
 
-      concertService.registerConcert(form, concertImage);
-
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(concertService.registerConcert(form, concertImage));
   }
 
 
   @PutMapping("/update")
-  public ResponseEntity<ConcertInfo> updateConcert(
+  public ResponseEntity<?> updateConcert(
       @RequestPart(value = "concert") @Valid ConcertUpdateForm form,
       @RequestPart(value = "concertImage", required = false) MultipartFile concertImage
   ){
