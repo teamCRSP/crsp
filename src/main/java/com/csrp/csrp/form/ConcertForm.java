@@ -4,6 +4,8 @@ import com.csrp.csrp.type.ConcertType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,12 +30,16 @@ public class ConcertForm {
   @NotNull(message = "콘서트 가격 작성")
   private Integer amount;
 
-  @NotNull(message = "콘서트 개최날 작성")
+  @NotNull(message = "콘서트 개최일시 작성")
   @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-  private LocalDateTime date;
+  private LocalDateTime startDate;
+
+  @NotNull(message = "콘서트 종료일시 작성")
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+  private LocalDateTime endDate;
 
   @NotNull(message = "콘서트 개최 위치 작성")
-  private String location;
+  private List<String> location = new ArrayList<>();
 
   @NotNull(message = "콘서트 타입(종류) 작성")
   private ConcertType concertType;

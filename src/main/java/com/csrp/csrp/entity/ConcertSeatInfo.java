@@ -1,13 +1,11 @@
 package com.csrp.csrp.entity;
 
-import com.csrp.csrp.form.AddConcertSeatForm;
 import com.csrp.csrp.form.ConcertForm;
+import com.csrp.csrp.form.ConcertUpdateForm;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,9 +28,9 @@ public class ConcertSeatInfo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "concert_info_id")
-  private ConcertInfo concertInfo;
+
+  @OneToOne
+  private ConcertLocInfo concertLocInfo;
 
   private Integer seatS;
   private Integer seatSPrice;
@@ -44,9 +42,9 @@ public class ConcertSeatInfo {
   private Integer seatBPrice;
 
 
-  public static ConcertSeatInfo from(ConcertForm form, ConcertInfo concertInfo){
+  public static ConcertSeatInfo from(ConcertForm form, ConcertLocInfo concertLocInfo){
     return ConcertSeatInfo.builder()
-        .concertInfo(concertInfo)
+        .concertLocInfo(concertLocInfo)
         .seatS(form.getSeatS())
         .seatSPrice(form.getSeatSPrice())
         .seatA(form.getSeatAPrice())
@@ -55,4 +53,5 @@ public class ConcertSeatInfo {
         .seatBPrice(form.getSeatBPrice())
         .build();
   }
+
 }
