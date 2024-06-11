@@ -1,5 +1,5 @@
 package com.csrp.csrp.type;
 
-public enum answerState {
+public enum AnswerState {
   PENDING, COMPLETED
 }

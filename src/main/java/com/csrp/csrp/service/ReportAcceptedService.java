@@ -11,11 +11,10 @@ import com.csrp.csrp.repository.ReviewRepository;
 import com.csrp.csrp.repository.UserRepository;
 import com.csrp.csrp.token.TokenUserInfo;
 import com.csrp.csrp.type.ErrorCode;
+import com.csrp.csrp.type.ReviewStopStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,29 +47,24 @@ public class ReportAcceptedService {
       reviewRepository.save(build);
     }
 
-    int findReviewCount = reviewRepository.countByUserAndSanctionIsTrue(user);// 해당 회원에 대한 제제 값이 true인 데이터의 개수
-    if (reportAccepted == null && findReviewCount >= 1) {  // 리뷰 제제가 true인 데이터 개수 1이상 그리고 신고 접수가 없을때
+    int findReviewCount = reviewRepository.countByUserAndReviewStopStatusAndSanction(user, ReviewStopStatus.NO, true);// 해당 회원에 대한 제제 값이 true, 정지이력이 없는 데이터의 개수
+    if (reportAccepted == null && findReviewCount >= 1  && save.getReviewStopStatus().equals(ReviewStopStatus.NO)) {  // 리뷰 제제가 true인 데이터 개수 1이상 그리고 정지이력 및 신고 접수가 없을때
       ReportAccepted entity = reportRegisterRequestDTO.toEntity(user, findReviewCount);
       entity.setCompareDate(null);
       reportAcceptedRepository.save(entity);
     } else if (reportAccepted != null && findReviewCount >=1){
         ReportAccepted entity = reportRegisterRequestDTO.toModifyEntity(user, findReviewCount, reportAccepted);
         if (entity.getWarningCount() == 3) {  // 신고누적횟수가 3일때 비교 날짜 생성
+          List<Review> byUserReviewList = reviewRepository.findByUserAndSanction(user, true);
+          for (Review byUserReview : byUserReviewList) {
+            Review toEntity = reportRegisterRequestDTO.setReviewStopStatus(byUserReview); // 리뷰 정지 이력 YES 로 저장
+            reviewRepository.save(toEntity);
+          }
           entity.setCompareDate(LocalDateTime.now());   // 스캐줄러를 이용하기 위한 비교 날짜
         }
         reportAcceptedRepository.save(entity);
     }
     return true;
-  }
-
-  //누적횟수가 3이상이고 일주일 지나면 자동 삭제
-  @Async
-  @Scheduled(cron = "0 0 0 * * *")   // 매일 자정에 실행
-  public void AutomaticDeleteReportAccepted() {
-    List<ReportAccepted> findAcceptedList = reportAcceptedRepository.findByCompareDate(LocalDateTime.now().minusDays(7));
-    for (ReportAccepted reportAccepted : findAcceptedList) {
-      reportAcceptedRepository.delete(reportAccepted);
-    }
   }
 
   // 신고 누적횟수 보기

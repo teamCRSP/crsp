@@ -4,21 +4,10 @@ package com.csrp.csrp.entity;
 import com.csrp.csrp.form.ConcertForm;
 import com.csrp.csrp.form.ConcertUpdateForm;
 import com.csrp.csrp.type.ConcertType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -70,9 +59,11 @@ public class ConcertInfo extends BaseTime {
     @Column(name = "CONCERTTYPE")
     private ConcertType concertType;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 
     public static ConcertInfo from(ConcertForm form, String concertImagePath) {
-
         return ConcertInfo.builder()
                 .title(form.getTitle())
                 .artist(form.getArtist())

@@ -1,6 +1,7 @@
 package com.csrp.csrp.entity;
 
 import com.csrp.csrp.type.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -62,8 +63,8 @@ public class User extends BaseTime{
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   private List<Inquiry> inquiries = new ArrayList<Inquiry>();
 
-//  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//  private List<ConcertInfo> concertInfos = new ArrayList<ConcertInfo>();
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  private List<ConcertInfo> concertInfos = new ArrayList<ConcertInfo>();
 
 //  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //  private List<ReservationHistory> reservationHistories = new ArrayList<ReservationHistory>();
