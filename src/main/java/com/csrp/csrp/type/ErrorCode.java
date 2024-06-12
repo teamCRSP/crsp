@@ -48,7 +48,10 @@ public enum ErrorCode {
   NOT_EXISTS_ANSWER(HttpStatus.NOT_FOUND, "A-001", "답변이 없습니다."),
 
   // ReportAccepted
-  REVIEW_STOP(HttpStatus.FOUND, "RA-001", "3번 이상 신고가 누적 되어 리뷰 등록이 정지되었습니다.");
+  REVIEW_STOP(HttpStatus.FOUND, "RA-001", "3번 이상 신고가 누적 되어 리뷰 등록이 정지되었습니다."),
+
+  // RESERVATION_HISTORY
+  NOT_EXISTS_RESERVATION_HISTORY(HttpStatus.FOUND, "RH-001", "찾는 예매 내역이 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String divisionCode;
