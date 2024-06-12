@@ -2,7 +2,6 @@ package com.csrp.csrp.controller;
 
 import com.csrp.csrp.dto.request.ReservationRegisterRequestDTO;
 import com.csrp.csrp.dto.response.ReservationDetailResponseDTO;
-import com.csrp.csrp.dto.response.ReservationListResponseDTO;
 import com.csrp.csrp.service.ReservationHistoryService;
 import com.csrp.csrp.token.TokenUserInfo;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -21,9 +22,9 @@ public class ReservationHistoryController {
   // 예매 내역 등록
   @PostMapping("/register")
   public ResponseEntity<?>  reservationRegister(
-      @Validated @RequestBody ReservationRegisterRequestDTO reservationRegisterRequestDTO,
+      @Validated @RequestBody List<ReservationRegisterRequestDTO> reservationRegisterRequestDTOList,
       @AuthenticationPrincipal TokenUserInfo tokenUserInfo) {
-    boolean result = reservationHistoryService.ReservationRegister(reservationRegisterRequestDTO, tokenUserInfo);
+    boolean result = reservationHistoryService.ReservationRegister(reservationRegisterRequestDTOList, tokenUserInfo);
     return ResponseEntity.ok().body(result);
   }
 
@@ -42,8 +43,8 @@ public class ReservationHistoryController {
   public ResponseEntity<?> myReservationList(
       @AuthenticationPrincipal TokenUserInfo tokenUserInfo
   ) {
-    ReservationListResponseDTO reservationListResponseDTO = reservationHistoryService.myReservationList(tokenUserInfo);
-    return ResponseEntity.ok().body(reservationListResponseDTO);
+    List<ReservationDetailResponseDTO> detailResponseDTOS = reservationHistoryService.myReservationList(tokenUserInfo);
+    return ResponseEntity.ok().body(detailResponseDTOS);
   }
 
 }

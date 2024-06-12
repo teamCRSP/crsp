@@ -19,12 +19,28 @@ public class ReservationDetailResponseDTO {
 
   private ConcertType concertType;
 
+  private String seatInfo;
+
+  private int count;
+
+  private String concertDate;
+
+  private String concertLocation;
+
   private int amount;
+
+  private Long concertInfoId;
 
   public ReservationDetailResponseDTO(ReservationHistory reservationHistory) {
     this.title = reservationHistory.getConcertInfo().getTitle();
     this.concertImage = reservationHistory.getConcertInfo().getConcertImage();
     this.concertType = reservationHistory.getConcertInfo().getConcertType();
     this.amount = reservationHistory.getAmount();
+    this.seatInfo = reservationHistory.getSeatInfo();
+    this.count = reservationHistory.getCount();
+    this.concertDate = reservationHistory.getConcertDate();
+    this.concertLocation = reservationHistory.getConcertLocation();
+    this.concertInfoId = reservationHistory.getConcertInfo().getId();
   }
+
 }

@@ -2,7 +2,6 @@ package com.csrp.csrp.service;
 
 import com.csrp.csrp.dto.request.ReservationRegisterRequestDTO;
 import com.csrp.csrp.dto.response.ReservationDetailResponseDTO;
-import com.csrp.csrp.dto.response.ReservationListResponseDTO;
 import com.csrp.csrp.entity.ConcertInfo;
 import com.csrp.csrp.entity.ReservationHistory;
 import com.csrp.csrp.entity.User;
@@ -17,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,13 +29,16 @@ public class ReservationHistoryService {
   private final ReservationHistoryRepository reservationHistoryRepository;
 
   // 예매 내역 등록
-  public boolean ReservationRegister(ReservationRegisterRequestDTO reservationRegisterRequestDTO, TokenUserInfo tokenUserInfo) {
+  public boolean ReservationRegister(List<ReservationRegisterRequestDTO> reservationRegisterRequestDTOList, TokenUserInfo tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    ConcertInfo concertInfo = concertInfoRepository.findById(reservationRegisterRequestDTO.getConcertId())
-        .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
-    ReservationHistory entity = reservationRegisterRequestDTO.toEntity(user, concertInfo, reservationRegisterRequestDTO);
-    reservationHistoryRepository.save(entity);
+
+    for (ReservationRegisterRequestDTO reservationRegisterRequestDTO : reservationRegisterRequestDTOList) {
+      ConcertInfo concertInfo = concertInfoRepository.findById(reservationRegisterRequestDTO.getConcertId())
+          .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
+      ReservationHistory entity = reservationRegisterRequestDTO.toEntity(user, concertInfo, reservationRegisterRequestDTO);
+      reservationHistoryRepository.save(entity);
+    }
     return true;
   }
 
@@ -51,10 +54,16 @@ public class ReservationHistoryService {
   }
 
   // 예매 내역 리스트 보기
-  public ReservationListResponseDTO myReservationList(TokenUserInfo tokenUserInfo) {
+  public  List<ReservationDetailResponseDTO> myReservationList(TokenUserInfo tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
     List<ReservationHistory> historyList = reservationHistoryRepository.findByUser(user);
-    return new ReservationListResponseDTO(historyList);
+    List<ReservationDetailResponseDTO> toDto = new ArrayList<>();
+    for (ReservationHistory reservationHistory : historyList) {
+      ReservationDetailResponseDTO reservationDetailResponseDTO = new ReservationDetailResponseDTO(reservationHistory);
+      toDto.add(reservationDetailResponseDTO);
+
+    }
+    return toDto;
   }
 }
