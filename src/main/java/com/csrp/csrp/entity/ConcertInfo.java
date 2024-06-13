@@ -31,8 +31,8 @@ public class ConcertInfo extends BaseTime {
     @OneToMany(mappedBy = "concertInfo")
     private List<ConcertLocInfo> concertLocInfoList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "concertInfo")
-    private Discount discount;
+//    @OneToOne(mappedBy = "concertInfo")
+//    private Discount discount;
 
     private String title;
 
