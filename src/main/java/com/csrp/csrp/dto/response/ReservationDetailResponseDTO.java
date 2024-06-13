@@ -1,6 +1,7 @@
 package com.csrp.csrp.dto.response;
 
-import com.csrp.csrp.entity.ReservationHistory;
+import com.csrp.csrp.entity.ConcertInfo;
+import com.csrp.csrp.entity.ReservationDetail;
 import com.csrp.csrp.type.ConcertType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,26 +22,26 @@ public class ReservationDetailResponseDTO {
 
   private String seatInfo;
 
-  private int count;
+  private int ticketCount;
 
   private String concertDate;
 
   private String concertLocation;
 
-  private int amount;
+  private int concertSeatPrice;
 
   private Long concertInfoId;
 
-  public ReservationDetailResponseDTO(ReservationHistory reservationHistory) {
-    this.title = reservationHistory.getConcertInfo().getTitle();
-    this.concertImage = reservationHistory.getConcertInfo().getConcertImage();
-    this.concertType = reservationHistory.getConcertInfo().getConcertType();
-    this.amount = reservationHistory.getAmount();
-    this.seatInfo = reservationHistory.getSeatInfo();
-    this.count = reservationHistory.getCount();
-    this.concertDate = reservationHistory.getConcertDate();
-    this.concertLocation = reservationHistory.getConcertLocation();
-    this.concertInfoId = reservationHistory.getConcertInfo().getId();
+  public ReservationDetailResponseDTO(ReservationDetail reservationDetail, ConcertInfo concertInfo) {
+    this.title = concertInfo.getTitle();
+    this.concertImage = concertInfo.getConcertImage();
+    this.concertType = concertInfo.getConcertType();
+    this.seatInfo = reservationDetail.getConcertSeat();
+    this.ticketCount = reservationDetail.getTicketCount();
+    this.concertDate = reservationDetail.getConcertDate();
+    this.concertSeatPrice = reservationDetail.getConcertSeatPrice();
+    this.concertLocation = reservationDetail.getConcertLocInfo().getLocation().get(0);  /////////////////////////// 고치기
+    this.concertInfoId = concertInfo.getId();
   }
 
 }

@@ -1,7 +1,6 @@
 package com.csrp.csrp.service;
 
-import com.csrp.csrp.dto.request.ReservationRegisterRequestDTO;
-import com.csrp.csrp.dto.response.ReservationDetailResponseDTO;
+import com.csrp.csrp.dto.response.ReservationHistoryResponseDTO;
 import com.csrp.csrp.entity.ConcertInfo;
 import com.csrp.csrp.entity.ReservationHistory;
 import com.csrp.csrp.entity.User;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,46 +22,38 @@ import java.util.List;
 @Transactional
 @Slf4j
 public class ReservationHistoryService {
-  private final UserRepository userRepository;
-  private final ConcertInfoRepository concertInfoRepository;
   private final ReservationHistoryRepository reservationHistoryRepository;
+  private final UserRepository userRepository;
 
   // 예매 내역 등록
-  public boolean ReservationRegister(List<ReservationRegisterRequestDTO> reservationRegisterRequestDTOList, TokenUserInfo tokenUserInfo) {
+  public ReservationHistory reservationHistoryRegister(User user, ConcertInfo concertInfo, int amount) {
+    ReservationHistory reservationHistory = ReservationHistory.builder()
+        .amount(amount)
+        .user(user)
+        .concertInfo(concertInfo)
+        .build();
+    return reservationHistoryRepository.save(reservationHistory);
+  }
+
+
+  // 예매 내역 조회
+  public List<ReservationHistoryResponseDTO> reservationHistoryShow(TokenUserInfo tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
+    List<ReservationHistory> reservationHistory = reservationHistoryRepository.findByUser(user);
+    return reservationHistory.stream().map(ReservationHistoryResponseDTO::new).toList();
+  }
 
-    for (ReservationRegisterRequestDTO reservationRegisterRequestDTO : reservationRegisterRequestDTOList) {
-      ConcertInfo concertInfo = concertInfoRepository.findById(reservationRegisterRequestDTO.getConcertId())
-          .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
-      ReservationHistory entity = reservationRegisterRequestDTO.toEntity(user, concertInfo, reservationRegisterRequestDTO);
-      reservationHistoryRepository.save(entity);
-    }
+  // 예매 내역 삭제
+  public boolean reservationHistoryDelete(Long reservationHistoryDeleteRequestDTO, TokenUserInfo tokenUserInfo) {
+    userRepository.findById(tokenUserInfo.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
+    ReservationHistory reservationHistory = reservationHistoryRepository.findById(reservationHistoryDeleteRequestDTO)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY));
+    reservationHistoryRepository.delete(reservationHistory);
     return true;
   }
 
 
-  // 예매 내역 상세 보기
-  public ReservationDetailResponseDTO myReservationDetail(Long reservationHistoryId, TokenUserInfo tokenUserInfo) {
-    userRepository.findById(tokenUserInfo.getId())
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    ReservationHistory reservationHistory = reservationHistoryRepository.findById(reservationHistoryId)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY));
 
-    return new ReservationDetailResponseDTO(reservationHistory);
-  }
-
-  // 예매 내역 리스트 보기
-  public  List<ReservationDetailResponseDTO> myReservationList(TokenUserInfo tokenUserInfo) {
-    User user = userRepository.findById(tokenUserInfo.getId())
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    List<ReservationHistory> historyList = reservationHistoryRepository.findByUser(user);
-    List<ReservationDetailResponseDTO> toDto = new ArrayList<>();
-    for (ReservationHistory reservationHistory : historyList) {
-      ReservationDetailResponseDTO reservationDetailResponseDTO = new ReservationDetailResponseDTO(reservationHistory);
-      toDto.add(reservationDetailResponseDTO);
-
-    }
-    return toDto;
-  }
 }
