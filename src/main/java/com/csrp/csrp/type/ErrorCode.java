@@ -7,24 +7,27 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    /**
-     * ******************************* Global Error CodeList ***************************************
-     * HTTP Status Code
-     * 400 : Bad Request
-     * 401 : Unauthorized
-     * 403 : Forbidden
-     * 404 : Not Found
-     * 500 : Internal Server Error
-     * *********************************************************************************************
-     */
+  /**
+   * ******************************* Global Error CodeList ***************************************
+   * HTTP Status Code
+   * 400 : Bad Request
+   * 401 : Unauthorized
+   * 403 : Forbidden
+   * 404 : Not Found
+   * 500 : Internal Server Error
+   * *********************************************************************************************
+   */
 
-    // CONCERT
+  // CONCERT
   CONCERT_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"C-001", "이미 개최된 콘서트 존재"),
   CONCERT_NOT_FOUND(HttpStatus.BAD_REQUEST,"C-002", "존재하지 않는 콘서트"),
   CONCERT_DATE_NOT_VALID(HttpStatus.BAD_REQUEST, "C-003", "종료일이 개최일 보다 이전입니다"),
   CONCERT_LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "C-004", "콘서트 위치가 존재안함"),
   CONCERT_DATE_NOT_FOUND(HttpStatus.BAD_REQUEST, "C-005", "콘서트 날짜 존재 안함"),
   CONCERT_SEAT_NOT_FOUND(HttpStatus.BAD_REQUEST, "C-006", "콘서트 좌석 존재 안함"),
+  DISCOUNT_DATE_NOT_VALID(HttpStatus.BAD_REQUEST, "C-007", "할인 날짜를 잘못 입력"),
+  DISCOUNT_PRICE_NOT_VALID(HttpStatus.BAD_REQUEST, "C-008", "할인 금액이 콘서트 금액보다 큼"),
+  CONCERT_LOCATION_NOT_MATCH(HttpStatus.BAD_REQUEST, "C-009", "콘서트 제목이 일치 안함"),
   DATABASE_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"D-001", "업데이트 실패"),
   DATABASE_SELECT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"D-002", "조회 실패"),
 
