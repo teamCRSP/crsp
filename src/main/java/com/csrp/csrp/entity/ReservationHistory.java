@@ -34,7 +34,7 @@ public class ReservationHistory extends BaseTime{
   private ConcertInfo concertInfo;
 
   @OneToMany(mappedBy = "reservationHistory", cascade = CascadeType.REMOVE)
-  private List<ReservationDetail> reservationHistories = new ArrayList<ReservationDetail>();
+  private List<ReservationDetail> reservationDetails = new ArrayList<ReservationDetail>();
 
   @OneToOne(mappedBy = "reservationHistory", cascade = CascadeType.REMOVE)
   private PaymentHistory paymentHistory = new PaymentHistory();
