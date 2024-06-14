@@ -71,7 +71,8 @@ public class ReservationDetailService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
     ReservationHistory history = reservationHistoryRepository.findById(reservationHistoryId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY));
-    List<ReservationDetail> reservationDetailList = reservationDetailRepository.findByReservationHistory(history);
+    List<ReservationDetail> reservationDetailList = reservationDetailRepository.findByReservationHistory(history)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_DETAIL));
     List<ReservationDetailResponseDTO> toDto = new ArrayList<>();
     for (ReservationDetail reservationDetail : reservationDetailList) {
       ReservationHistory reservationHistory = reservationHistoryRepository.findById(reservationDetail.getReservationHistory().getId())

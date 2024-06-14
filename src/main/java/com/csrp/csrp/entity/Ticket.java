@@ -1,6 +1,5 @@
 package com.csrp.csrp.entity;
 
-import com.csrp.csrp.type.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,24 +15,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
-public class Payment {
+public class Ticket extends BaseTime{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "payment_id")
+  @Column(name = "ticket_id")
   private Long id;
 
-  @Column(name = "amount", nullable = false)
-  private int amount;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "'PENDING'")
-  private PaymentStatus paymentStatus;
-
-  @Column(name = "payment_date", nullable = false)
-  private LocalDateTime paymentDate;
+  @Column(name = "concert_date", nullable = false)
+  private LocalDateTime concertDate;  // 콘서트 날짜
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "reservation_history_id")
   private ReservationHistory reservationHistory;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 }

@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +26,7 @@ public class ReservationDetailResponseDTO {
 
   private int ticketCount;
 
-  private String concertDate;
+  private LocalDateTime concertDate;
 
   private String concertLocation;
 

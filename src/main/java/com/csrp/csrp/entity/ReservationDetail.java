@@ -29,13 +29,13 @@ public class ReservationDetail {
   private int ticketCount;  // 티켓 수량
 
   @Column(name = "concert_date")
-  private String concertDate; // 콘서트 날짜
+  private LocalDateTime concertDate; // 콘서트 날짜
 
   @Column(name = "ticketing_date", nullable = false)
   private LocalDateTime ticketingDate;  // 예매 일시
 
   @Column(name = "concert_seat_price")
-  private int concertSeatPrice;
+  private int concertSeatPrice; // 콘서트 좌석 가격
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "concert_loc_info_id")

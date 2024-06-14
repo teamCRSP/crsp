@@ -1,6 +1,6 @@
 package com.csrp.csrp.repository;
 
-import com.csrp.csrp.entity.PaymentHistory;
+import com.csrp.csrp.entity.Ticket;
 import com.csrp.csrp.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PaymentRepository extends JpaRepository<PaymentHistory, Long> {
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
-  Optional<List<PaymentHistory>> findByUser(User user);
+  List<Ticket> findByUser(User user);
 }

@@ -30,7 +30,7 @@ public class ReservationDetailRegisterRequestDTO {
   private int ticketCount;  // 개수
 
   @NotNull
-  private String concertDate;
+  private LocalDateTime concertDate;
 
   public ReservationDetail toEntity(ReservationHistory reservationHistory, ConcertLocInfo concertLocInfo, ReservationDetailRegisterRequestDTO reservationRegisterRequestDTO) {
     return ReservationDetail.builder()

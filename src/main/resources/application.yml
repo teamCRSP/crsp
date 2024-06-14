@@ -28,3 +28,8 @@ spring:
 
   jwt:
     secret: eW91bmdzaWstc3ByaW5nLWJvb3Qtc3RvcmV0YWJsZXJlc2VydmF0aW9uc2VydmljZS1wcm9qZWN0LXR1dG9yaWFsLWp3dC1zZWNyZXQta2V5Cg==
+# 아임 포트
+IMP_API_KEY: 4627373384371080
+imp:
+  api:
+    secretKey: YDkJUiY0CBOD4lcS2u5yhLF0aanmAMqKhsrNcbJFMSoJaRF2nkGLCukgCmFxrrEP1068NZko93Zck2ml

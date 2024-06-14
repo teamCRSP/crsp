@@ -36,7 +36,12 @@ public class ReservationHistory extends BaseTime{
   @OneToMany(mappedBy = "reservationHistory", cascade = CascadeType.REMOVE)
   private List<ReservationDetail> reservationHistories = new ArrayList<ReservationDetail>();
 
+  @OneToOne(mappedBy = "reservationHistory", cascade = CascadeType.REMOVE)
+  private PaymentHistory paymentHistory = new PaymentHistory();
+
   @OneToMany(mappedBy = "reservationHistory", cascade = CascadeType.REMOVE)
-  private List<Payment> payments = new ArrayList<Payment>();
+  private List<Ticket> tickets = new ArrayList<Ticket>();
+
+
 
 }
