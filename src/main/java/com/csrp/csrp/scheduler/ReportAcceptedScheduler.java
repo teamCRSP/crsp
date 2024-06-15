@@ -5,6 +5,7 @@ import com.csrp.csrp.repository.ReportAcceptedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@EnableScheduling
 public class ReportAcceptedScheduler {
   private final ReportAcceptedRepository reportAcceptedRepository;
   //누적횟수가 3이상이고 일주일 지나면 자동 삭제
