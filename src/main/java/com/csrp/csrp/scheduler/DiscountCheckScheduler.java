@@ -18,7 +18,7 @@ public class DiscountCheckScheduler {
 
   // 할인기간 끝을 확인하는 스케줄러
   //@Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
-  @Scheduled(fixedDelay = 1000)
+  @Scheduled(fixedDelay = 60000)
   public void checkAndActiveDiscount(){
 
     LocalDateTime today = LocalDateTime.now();
