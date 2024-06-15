@@ -25,7 +25,7 @@ public class Love extends BaseTime {
   private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "concert_id")
+  @JoinColumn(name = "concert_info_id")
   private ConcertInfo concertInfo;
 
 }
