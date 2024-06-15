@@ -37,7 +37,7 @@ public class Inquiry extends BaseTime{
   @JoinColumn(name = "concert_id")
   ConcertInfo concertInfo;
 
-  @OneToOne(mappedBy = "inquiry", cascade = CascadeType.REMOVE)
+  @OneToOne(mappedBy = "inquiry", cascade = CascadeType.ALL)
   private Answer answer = new Answer();
 
 }
