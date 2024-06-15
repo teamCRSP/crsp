@@ -40,9 +40,6 @@ public class PaymentRequestDTO {
 
   @NotNull
   private LocalDateTime endDate;
-
-  @NotNull
-  private Long reservationHistoryId;
-
+  
 
 }
