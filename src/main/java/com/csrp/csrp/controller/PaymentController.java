@@ -3,8 +3,6 @@ package com.csrp.csrp.controller;
 import com.csrp.csrp.dto.request.PaymentRequestDTO;
 import com.csrp.csrp.dto.response.PaymentHistoryResponseDTO;
 import com.csrp.csrp.service.PaymentService;
-import com.csrp.csrp.service.ReservationHistoryService;
-import com.csrp.csrp.service.TicketService;
 import com.csrp.csrp.token.TokenUserInfo;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -28,7 +26,6 @@ import java.util.List;
 @RequestMapping("/payment")
 public class PaymentController {
   private final PaymentService paymentService;
-  private final TicketService ticketService;
   private IamportClient iamportClient;
 
   @Value("${IMP_API_KEY}")
@@ -42,18 +39,28 @@ public class PaymentController {
     this.iamportClient = new IamportClient(apiKey, secretKey);
   }
 
-  // 결제 완료
+//   결제 완료
+//  @PostMapping("/{imp_uid}")
+//  public IamportResponse<Payment> validateIamPort(@PathVariable String imp_uid, @Validated @RequestBody List<PaymentRequestDTO> request,
+//                                                  @AuthenticationPrincipal TokenUserInfo tokenUserInfo) throws IamportResponseException, IOException {
+//
+//    IamportResponse<Payment> payment = iamportClient.paymentByImpUid(imp_uid);
+//    if (payment != null || payment.getResponse() != null) {
+//      log.error("Failed to retrieve payment information from Iamport.");
+//      paymentService.paymentDone(request, tokenUserInfo);
+//    }
+//    log.info("결제 요청 응답. 결제 내역 - 주문 번호: {}", payment.getResponse().getMerchantUid());
+//
+//    return payment;
+//  }
+
   @PostMapping("/{imp_uid}")
-  public IamportResponse<Payment> validateIamPort(@PathVariable String imp_uid, @Validated @RequestBody PaymentRequestDTO request,
+  public boolean validateIamPort(@PathVariable("imp_uid") String impUid, @Validated @RequestBody List<PaymentRequestDTO> request,
                                                   @AuthenticationPrincipal TokenUserInfo tokenUserInfo) throws IamportResponseException, IOException {
 
-    IamportResponse<Payment> payment = iamportClient.paymentByImpUid(imp_uid);
-
-    log.info("결제 요청 응답. 결제 내역 - 주문 번호: {}", payment.getResponse().getMerchantUid());
-
     paymentService.paymentDone(request, tokenUserInfo);
-    ticketService.getTicket(request, tokenUserInfo);
-    return payment;
+
+    return true;
   }
 
   // 결제 내역 조회
