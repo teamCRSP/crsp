@@ -16,7 +16,9 @@ import java.time.LocalDateTime;
 @Builder
 public class TicketResponseDTO {
 
-  private LocalDateTime concertDate;
+  private LocalDateTime startDate;
+
+  private LocalDateTime endDate;
 
   private String concertImage;
 
@@ -24,13 +26,21 @@ public class TicketResponseDTO {
 
   private String concertSeat;
 
+  private int concertSeatPrice;
+
   private int ticketCount;
 
+  private String concertLocation;
+
+
   public TicketResponseDTO(ConcertInfo concertInfo, ReservationDetail reservationDetail) {
-    this.concertDate = reservationDetail.getConcertDate();
+    this.startDate = reservationDetail.getStartDate();
+    this.endDate = reservationDetail.getEndDate();
     this.concertImage = concertInfo.getConcertImage();
     this.title = concertInfo.getTitle();
     this.concertSeat = reservationDetail.getConcertSeat();
     this.ticketCount = reservationDetail.getTicketCount();
+    this.concertSeatPrice = reservationDetail.getConcertSeatPrice();
+    this.concertLocation = reservationDetail.getConcertLocInfo().getLocation().get(0); //////////////////// 병합하면 고치기
   }
 }
