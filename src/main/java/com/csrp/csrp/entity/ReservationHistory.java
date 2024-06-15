@@ -33,13 +33,14 @@ public class ReservationHistory extends BaseTime{
   @JoinColumn(name = "concert_info_id")
   private ConcertInfo concertInfo;
 
-  @OneToMany(mappedBy = "reservationHistory", cascade = CascadeType.REMOVE)
+
+  @OneToMany(mappedBy = "reservationHistory", cascade = CascadeType.ALL)
   private List<ReservationDetail> reservationDetails = new ArrayList<ReservationDetail>();
 
-  @OneToOne(mappedBy = "reservationHistory", cascade = CascadeType.REMOVE)
+  @OneToOne(mappedBy = "reservationHistory", cascade = CascadeType.PERSIST)
   private PaymentHistory paymentHistory = new PaymentHistory();
 
-  @OneToMany(mappedBy = "reservationHistory", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "reservationHistory", cascade = CascadeType.PERSIST)
   private List<Ticket> tickets = new ArrayList<Ticket>();
 
 
