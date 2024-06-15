@@ -35,7 +35,7 @@ public class PaymentService {
   public void paymentDone(List<PaymentRequestDTO> request, TokenUserInfo tokenUserInfo) {
     ReservationHistory reservationHistory = null;
     ReservationDetail reservationDetail = null;
-    List<Ticket> tickets = null;
+    Ticket ticket = null;
     try {
       int amount = 0;
       for (PaymentRequestDTO paymentRequestDTO : request) {
@@ -51,7 +51,7 @@ public class PaymentService {
           .user(user)
           .concertInfo(concertInfo)
           .build();
-      ReservationHistory save = reservationHistoryRepository.save(reservationHistory);
+      ReservationHistory saveReservation = reservationHistoryRepository.save(reservationHistory);
       // 예매 내역 상세 등록
       for (PaymentRequestDTO paymentRequestDTO : request) {
         reservationDetail = ReservationDetail.builder()
@@ -62,12 +62,12 @@ public class PaymentService {
             .ticketCount(paymentRequestDTO.getTicketCount())
             .concertLocInfo(concertLocInfoRepository.findById(paymentRequestDTO.getConcertLocId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_LOCATION_NOT_FOUND)))
-            .reservationHistory(reservationHistoryRepository.findById(paymentRequestDTO.getReservationHistoryId())
+            .reservationHistory(reservationHistoryRepository.findById(saveReservation.getId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY)))
             .build();
-        reservationDetailRepository.save(reservationDetail);
+        ReservationDetail save = reservationDetailRepository.save(reservationDetail);
         // 티켓 발부
-        tickets = ticketService.getTicket(paymentRequestDTO, tokenUserInfo);
+        ticketService.getTicket(save, user);
       }
 
 
@@ -78,8 +78,8 @@ public class PaymentService {
       if (reservationHistory != null) {
         reservationHistoryRepository.delete(reservationHistory);
       }
-      if (tickets != null) {
-          ticketRepository.deleteAll(tickets);
+      if (ticket != null) {
+        ticketRepository.delete(ticket);
       }
       throw new RuntimeException(e);
     }

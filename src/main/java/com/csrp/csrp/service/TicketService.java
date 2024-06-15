@@ -1,7 +1,5 @@
 package com.csrp.csrp.service;
 
-import com.csrp.csrp.dto.request.PaymentRequestDTO;
-import com.csrp.csrp.dto.response.ReservationDetailResponseDTO;
 import com.csrp.csrp.dto.response.TicketResponseDTO;
 import com.csrp.csrp.entity.*;
 import com.csrp.csrp.exception.CustomException;
@@ -13,10 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,33 +30,34 @@ public class TicketService {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
     List<Ticket> ticketList = ticketRepository.findByUser(user);
-
     List<TicketResponseDTO> toDto = new ArrayList<>();
     for (Ticket ticket : ticketList) {
-      ReservationHistory reservationHistory = reservationHistoryRepository.findById(ticket.getReservationHistory().getId())
+      ReservationDetail reservationDetail = reservationDetailRepository.findById(ticket.getReservationDetail().getId())
+          .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_DETAIL));
+      ReservationHistory reservationHistory = reservationHistoryRepository.findById(reservationDetail.getReservationHistory().getId())
           .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY));
       ConcertInfo concertInfo = concertInfoRepository.findById(reservationHistory.getConcertInfo().getId())
           .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
-      for (ReservationDetail reservationDetail : reservationDetailRepository.findByReservationHistory(reservationHistory)
-          .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_DETAIL))) {
-        TicketResponseDTO ticketResponseDTO = new TicketResponseDTO(concertInfo, reservationDetail);
-        toDto.add(ticketResponseDTO);
-      }
+      TicketResponseDTO ticketResponseDTO = new TicketResponseDTO(concertInfo, reservationDetail);
+      toDto.add(ticketResponseDTO);
     }
+
     return toDto;
   }
 
   // 티켓 발급
-  public void getTicket(PaymentRequestDTO request, TokenUserInfo tokenUserInfo) {
+  public List<Ticket> getTicket(ReservationDetail reservationDetail, User tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    ReservationHistory reservationHistory = reservationHistoryRepository.findById(request.getReservationHistoryId())
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY));
+    List<Ticket> ticketList = new ArrayList<>();
 
-    ticketRepository.save(Ticket.builder()
-        .concertDate(LocalDateTime.now())
+    Ticket save = ticketRepository.save(Ticket.builder()  // 티켓 저장
         .user(user)
-        .reservationHistory(reservationHistory)
-        .build());  // 티켓 저장
+        .endDate(reservationDetail.getEndDate())
+        .reservationDetail(reservationDetail)
+        .build());
+    ticketList.add(save);
+
+    return ticketList;
   }
 }
