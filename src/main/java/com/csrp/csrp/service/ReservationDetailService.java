@@ -27,31 +27,6 @@ public class ReservationDetailService {
   private final ReservationHistoryService reservationHistoryService;
   private final ReservationDetailRepository reservationDetailRepository;
 
-  // 예매 내역 등록 및 상세 등록
-  public boolean reservationDetailRegister(List<ReservationDetailRegisterRequestDTO> reservationDetailRegisterRequestDTOList, TokenUserInfo tokenUserInfo) {
-    User user = userRepository.findById(tokenUserInfo.getId())
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    int amount = 0;
-    for (ReservationDetailRegisterRequestDTO reservationDetailRegisterRequestDTO : reservationDetailRegisterRequestDTOList) {
-      amount += (reservationDetailRegisterRequestDTO.getConcertSeatPrice() * reservationDetailRegisterRequestDTO.getTicketCount());  // 좌석 가격 총합
-    }
-    ConcertLocInfo concertLoc = concertLocInfoRepository.findById(reservationDetailRegisterRequestDTOList.get(0).getConcertLocId())
-        .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_LOCATION_NOT_FOUND));
-    ConcertInfo concert = concertInfoRepository.findById(concertLoc.getConcertInfo().getId())
-        .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
-    ReservationHistory reservationHistory = reservationHistoryService.reservationHistoryRegister(user, concert, amount); // 예매 내역 저장
-
-    for (ReservationDetailRegisterRequestDTO reservationDetailRegisterRequestDTO : reservationDetailRegisterRequestDTOList) {
-      ConcertLocInfo concertLocInfo = concertLocInfoRepository.findById(reservationDetailRegisterRequestDTO.getConcertLocId())
-          .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_LOCATION_NOT_FOUND));
-
-      ReservationDetail entity = reservationDetailRegisterRequestDTO.toEntity(reservationHistory, concertLocInfo, reservationDetailRegisterRequestDTO);
-     reservationDetailRepository.save(entity);  // 예매 내역 상세 저장
-    }
-
-    return true;
-  }
-
 
   // 예매 내역 상세 보기
   public ReservationDetailResponseDTO myReservationDetail(Long reservationDetailId, TokenUserInfo tokenUserInfo) {
@@ -71,7 +46,8 @@ public class ReservationDetailService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
     ReservationHistory history = reservationHistoryRepository.findById(reservationHistoryId)
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY));
-    List<ReservationDetail> reservationDetailList = reservationDetailRepository.findByReservationHistory(history);
+    List<ReservationDetail> reservationDetailList = reservationDetailRepository.findByReservationHistory(history)
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_DETAIL));
     List<ReservationDetailResponseDTO> toDto = new ArrayList<>();
     for (ReservationDetail reservationDetail : reservationDetailList) {
       ReservationHistory reservationHistory = reservationHistoryRepository.findById(reservationDetail.getReservationHistory().getId())

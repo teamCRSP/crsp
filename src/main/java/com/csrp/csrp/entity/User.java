@@ -50,21 +50,27 @@ public class User extends BaseTime{
   @ColumnDefault("'CUSTOMER'")
   private Role role;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<ReportAccepted> reportAccepted = new ArrayList<ReportAccepted>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Love> loves = new ArrayList<Love>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Answer> answers = new ArrayList<Answer>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Inquiry> inquiries = new ArrayList<Inquiry>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<ConcertInfo> concertInfos = new ArrayList<ConcertInfo>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<ReservationHistory> reservationHistories = new ArrayList<ReservationHistory>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+  private List<Ticket> tickets = new ArrayList<Ticket>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+  private List<PaymentHistory> paymentHistories = new ArrayList<PaymentHistory>();
 }

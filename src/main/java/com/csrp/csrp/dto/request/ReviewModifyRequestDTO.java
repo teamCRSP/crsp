@@ -37,6 +37,7 @@ public class ReviewModifyRequestDTO {
         .rating(reviewModifyRequestDTO.getRating())
         .sanction(review.isSanction())
         .reviewWarningCount(review.getReviewWarningCount())
+        .reviewStopStatus(review.getReviewStopStatus())
         .user(user)
         .concertInfo(concertInfo)
         .build();

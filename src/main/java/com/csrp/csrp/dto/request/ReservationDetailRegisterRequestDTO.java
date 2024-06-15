@@ -30,15 +30,18 @@ public class ReservationDetailRegisterRequestDTO {
   private int ticketCount;  // 개수
 
   @NotNull
-  private String concertDate;
+  private LocalDateTime startDate;
+
+  @NotNull
+  private LocalDateTime endDate;
 
   public ReservationDetail toEntity(ReservationHistory reservationHistory, ConcertLocInfo concertLocInfo, ReservationDetailRegisterRequestDTO reservationRegisterRequestDTO) {
     return ReservationDetail.builder()
         .concertSeat(reservationRegisterRequestDTO.getConcertSeat())
         .ticketCount(reservationRegisterRequestDTO.getTicketCount())
-        .concertDate(reservationRegisterRequestDTO.getConcertDate())
+        .startDate(reservationRegisterRequestDTO.getStartDate())
+        .endDate(reservationRegisterRequestDTO.getEndDate())
         .concertSeatPrice(reservationRegisterRequestDTO.getConcertSeatPrice())
-        .ticketingDate(LocalDateTime.now())
         .concertLocInfo(concertLocInfo)
         .reservationHistory(reservationHistory)
         .build();

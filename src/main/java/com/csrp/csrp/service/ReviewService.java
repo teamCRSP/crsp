@@ -14,6 +14,7 @@ import com.csrp.csrp.repository.ReviewRepository;
 import com.csrp.csrp.repository.UserRepository;
 import com.csrp.csrp.token.TokenUserInfo;
 import com.csrp.csrp.type.ErrorCode;
+import com.csrp.csrp.type.ReviewStopStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -89,6 +90,7 @@ public class ReviewService {
         .build();
   }
 
+  // 리뷰 삭제
   public boolean reviewDelete(ReviewDeleteRequestDTO reviewDeleteRequestDTO, TokenUserInfo tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
@@ -105,6 +107,7 @@ public class ReviewService {
     return true;
   }
 
+  // 리뷰 수정
   public boolean reviewModify(ReviewModifyRequestDTO reviewModifyRequestDTO, TokenUserInfo tokenUserInfo) {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
@@ -114,6 +117,9 @@ public class ReviewService {
     Review review = reviewRepository.findById(reviewModifyRequestDTO.getReviewId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_REVIEW));
     Review entity = reviewModifyRequestDTO.toEntity(reviewModifyRequestDTO, review, user, concertInfo);
+    if (entity.getReviewStopStatus().equals(ReviewStopStatus.YES)){
+      throw new CustomException(ErrorCode.REVIEW_STOP);
+    }
     reviewRepository.save(entity);
 
     return true;

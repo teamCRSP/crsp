@@ -57,7 +57,13 @@ public enum ErrorCode {
   NOT_EXISTS_RESERVATION_HISTORY(HttpStatus.NOT_FOUND, "RH-001", "찾는 예매 내역이 없습니다."),
 
   // TICKET
-  NOT_EXISTS_TICKET(HttpStatus.NOT_FOUND, "T-001", "티켓이 없습니다.");
+  NOT_EXISTS_TICKET(HttpStatus.NOT_FOUND, "T-001", "티켓이 없습니다."),
+
+  // RESERVATION_DEAIL
+  NOT_EXISTS_RESERVATION_DETAIL(HttpStatus.NOT_FOUND, "RD-001", "찾는 상세 예매 내역이 없습니다."),
+
+  // PAYMENT_HISTORY
+  NOT_EXISTS_PAYMENT_HISTORY(HttpStatus.NOT_FOUND, "PH-001", "찾는 결제 내역이 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String divisionCode;

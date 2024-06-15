@@ -27,14 +27,5 @@ public class ReservationHistoryController {
     return ResponseEntity.ok().body(reservationHistoryResponseDTOS);
   }
 
-  // 예매 내역 삭제
-  @DeleteMapping("/delete")
-  public ResponseEntity<?> reservationHistoryDelete(
-      @RequestParam("reservationHistoryId") Long reservationHistoryId,
-      @AuthenticationPrincipal TokenUserInfo tokenUserInfo
-  ) {
-    boolean result = reservationHistoryService.reservationHistoryDelete(reservationHistoryId, tokenUserInfo);
-    return ResponseEntity.ok().body(result);
-  }
 
 }

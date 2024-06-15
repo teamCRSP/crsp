@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @DynamicInsert
-public class ReservationDetail {
+public class ReservationDetail extends BaseTime{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,14 +28,14 @@ public class ReservationDetail {
   @Column(name = "ticket_count", nullable = false)
   private int ticketCount;  // 티켓 수량
 
-  @Column(name = "concert_date")
-  private String concertDate; // 콘서트 날짜
+  @Column(name = "start_date")
+  private LocalDateTime startDate; // 콘서트 시작
 
-  @Column(name = "ticketing_date", nullable = false)
-  private LocalDateTime ticketingDate;  // 예매 일시
+  @Column(name = "end_date")
+  private LocalDateTime endDate; // 콘서트 종료
 
   @Column(name = "concert_seat_price")
-  private int concertSeatPrice;
+  private int concertSeatPrice; // 콘서트 좌석 가격
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "concert_loc_info_id")
@@ -45,5 +45,7 @@ public class ReservationDetail {
   @JoinColumn(name = "reservation_history_id")
   private ReservationHistory reservationHistory;
 
+  @OneToOne(mappedBy = "reservationDetail", cascade = CascadeType.PERSIST)
+  private Ticket ticket = new Ticket();
 }
 
