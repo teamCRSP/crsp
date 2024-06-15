@@ -45,7 +45,7 @@ public class ReservationDetailResponseDTO {
     this.startDate = reservationDetail.getStartDate();
     this.endDate = reservationDetail.getEndDate();
     this.concertSeatPrice = reservationDetail.getConcertSeatPrice();
-    this.concertLocation = reservationDetail.getConcertLocInfo().getLocation().get(0);  /////////////////////////// 고치기
+    this.concertLocation = reservationDetail.getConcertLocInfo().getLocation();
     this.concertInfoId = concertInfo.getId();
   }
 
