@@ -117,8 +117,8 @@ public class ReviewService {
     Review review = reviewRepository.findById(reviewModifyRequestDTO.getReviewId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_REVIEW));
     Review entity = reviewModifyRequestDTO.toEntity(reviewModifyRequestDTO, review, user, concertInfo);
-    if (entity.getReviewStopStatus().equals(ReviewStopStatus.YES)){
-      throw new CustomException(ErrorCode.REVIEW_STOP);
+    if (entity.isSanction()){
+      throw new CustomException(ErrorCode.NOT_MODIFY);
     }
     reviewRepository.save(entity);
 
