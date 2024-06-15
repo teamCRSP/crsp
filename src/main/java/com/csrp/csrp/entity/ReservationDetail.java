@@ -45,5 +45,7 @@ public class ReservationDetail extends BaseTime{
   @JoinColumn(name = "reservation_history_id")
   private ReservationHistory reservationHistory;
 
+  @OneToOne(mappedBy = "reservationDetail", cascade = CascadeType.PERSIST)
+  private Ticket ticket = new Ticket();
 }
 
