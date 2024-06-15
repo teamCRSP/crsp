@@ -19,15 +19,6 @@ import java.util.List;
 @RequestMapping("/reservationDetail")
 public class ReservationDetailController {
   private final ReservationDetailService reservationDetailService;
-  // 예매 내역 상세 등록
-  @PostMapping("/register")
-  public ResponseEntity<?>  reservationRegister(
-      @Validated @RequestBody List<ReservationDetailRegisterRequestDTO> reservationDetailRegisterRequestDTOList,
-      @AuthenticationPrincipal TokenUserInfo tokenUserInfo) {
-    boolean result = reservationDetailService.reservationDetailRegister(reservationDetailRegisterRequestDTOList, tokenUserInfo);
-    return ResponseEntity.ok().body(result);
-  }
-
 
   // 예매 내역 상세보기
   @GetMapping("/show")
