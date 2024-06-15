@@ -19,9 +19,12 @@ public class Ticket extends BaseTime{
   @Column(name = "ticket_id")
   private Long id;
 
+  @Column(name = "end_date", nullable = false)
+  private LocalDateTime endDate;  // 종료 일자
+
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "reservation_history_id")
-  private ReservationHistory reservationHistory;
+  @JoinColumn(name = "reservation_detail_id")
+  private ReservationDetail reservationDetail;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
