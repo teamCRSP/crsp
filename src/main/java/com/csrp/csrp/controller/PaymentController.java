@@ -1,6 +1,8 @@
 package com.csrp.csrp.controller;
 
+import com.csrp.csrp.dto.request.PaymentPageDTO;
 import com.csrp.csrp.dto.request.PaymentRequestDTO;
+import com.csrp.csrp.dto.response.PaymentHistoryListResponseDTO;
 import com.csrp.csrp.dto.response.PaymentHistoryResponseDTO;
 import com.csrp.csrp.service.PaymentService;
 import com.csrp.csrp.token.TokenUserInfo;
@@ -65,8 +67,10 @@ public class PaymentController {
 
   // 결제 내역 조회
   @GetMapping("/history")
-  public ResponseEntity<List<PaymentHistoryResponseDTO>> paymentList(@AuthenticationPrincipal TokenUserInfo tokenUserInfo) {
-    List<PaymentHistoryResponseDTO> paymentHistoryResponseDTOS = paymentService.paymentHistoryList(tokenUserInfo);
-    return ResponseEntity.ok().body(paymentHistoryResponseDTOS);
+  public ResponseEntity<?> paymentList(
+      @Validated @RequestBody PaymentPageDTO paymentPageDTO,
+      @AuthenticationPrincipal TokenUserInfo tokenUserInfo) {
+    PaymentHistoryListResponseDTO paymentHistoryListResponseDTO = paymentService.paymentHistoryList(paymentPageDTO, tokenUserInfo);
+    return ResponseEntity.ok().body(paymentHistoryListResponseDTO);
   }
 }
