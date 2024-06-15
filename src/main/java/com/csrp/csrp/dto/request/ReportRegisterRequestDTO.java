@@ -54,6 +54,7 @@ public class ReportRegisterRequestDTO {
         .reviewWarningCount(review.getReviewWarningCount() + 1)
         .reviewStopStatus(review.getReviewStopStatus())
         .concertInfo(review.getConcertInfo())
+        .reviewStopStatus(review.getReviewStopStatus())
         .user(review.getUser())
         .build();
   }

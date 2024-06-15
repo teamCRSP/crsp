@@ -1,7 +1,10 @@
 package com.csrp.csrp.service;
 
+import com.csrp.csrp.dto.request.PaymentPageDTO;
 import com.csrp.csrp.dto.request.PaymentRequestDTO;
+import com.csrp.csrp.dto.response.PageResponseDTO;
 import com.csrp.csrp.dto.response.PaymentHistoryResponseDTO;
+import com.csrp.csrp.dto.response.PaymentHistoryListResponseDTO;
 import com.csrp.csrp.entity.*;
 import com.csrp.csrp.exception.CustomException;
 import com.csrp.csrp.repository.*;
@@ -10,6 +13,9 @@ import com.csrp.csrp.type.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -87,20 +93,30 @@ public class PaymentService {
   }
 
   // 결제 내역 조회
-  public List<PaymentHistoryResponseDTO> paymentHistoryList(TokenUserInfo tokenUserInfo) {
+  public PaymentHistoryListResponseDTO paymentHistoryList(PaymentPageDTO paymentPageDTO, TokenUserInfo tokenUserInfo) {
+    PageRequest pageRequest = PageRequest.of(
+        paymentPageDTO.getPage() - 1,
+        paymentPageDTO.getSize(),
+        Sort.by("id").descending()
+    );
+
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
     List<PaymentHistoryResponseDTO> toDto = new ArrayList<>();
-    for (PaymentHistory paymentHistory : paymentRepository.findByUser(user)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_PAYMENT_HISTORY))) {
+    Page<PaymentHistory> byUser = paymentRepository.findByUser(user, pageRequest);
+    for (PaymentHistory paymentHistory : byUser) {
       ReservationHistory reservationHistory = reservationHistoryRepository.findById(paymentHistory.getReservationHistory().getId())
           .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY));
       ConcertInfo concertInfo = concertInfoRepository.findById(reservationHistory.getConcertInfo().getId())
           .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
       PaymentHistoryResponseDTO paymentHistoryResponseDTO = new PaymentHistoryResponseDTO(concertInfo, paymentHistory);
-
       toDto.add(paymentHistoryResponseDTO);
     }
-    return toDto;
+
+    return PaymentHistoryListResponseDTO.builder()
+        .count(toDto.size())
+        .pageResponseDTO(new PageResponseDTO(byUser))
+        .paymentHistories(toDto)
+        .build();
   }
 }

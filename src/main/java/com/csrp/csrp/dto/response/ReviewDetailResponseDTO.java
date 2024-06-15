@@ -1,9 +1,8 @@
 package com.csrp.csrp.dto.response;
 
-import com.csrp.csrp.entity.ConcertInfo;
 import com.csrp.csrp.entity.Review;
-import com.csrp.csrp.entity.User;
 import com.csrp.csrp.type.ConcertType;
+import com.csrp.csrp.type.ReviewStopStatus;
 import com.csrp.csrp.type.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +37,10 @@ public class ReviewDetailResponseDTO {
 
   private Role role;
 
+  private boolean sanction;
+
+  private ReviewStopStatus reviewStopStatus;
+
   public ReviewDetailResponseDTO(Review review) {
     this.content = review.getContent();
     this.rating = review.getRating();
@@ -49,5 +52,7 @@ public class ReviewDetailResponseDTO {
     this.age = review.getUser().getAge();
     this.profileImage = review.getUser().getProfileImage();
     this.role = review.getUser().getRole();
+    this.sanction = review.isSanction();
+    this.reviewStopStatus = review.getReviewStopStatus();
   }
 }

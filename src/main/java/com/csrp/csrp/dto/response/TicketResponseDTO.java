@@ -41,6 +41,6 @@ public class TicketResponseDTO {
     this.concertSeat = reservationDetail.getConcertSeat();
     this.ticketCount = reservationDetail.getTicketCount();
     this.concertSeatPrice = reservationDetail.getConcertSeatPrice();
-    this.concertLocation = reservationDetail.getConcertLocInfo().getLocation().get(0); //////////////////// 병합하면 고치기
+    this.concertLocation = reservationDetail.getConcertLocInfo().getLocation();
   }
 }

@@ -43,6 +43,7 @@ public enum ErrorCode {
 
   // REVIEW
   NOT_EXISTS_REVIEW(HttpStatus.NOT_FOUND, "R-001", "리뷰가 존재하지 않습니다."),
+  NOT_MODIFY(HttpStatus.FOUND, "R-002", "해당 리뷰가 누적 제재 3번을 당해 수정 할 수 없습니다."),
 
   // INQUIRY
   NOT_EXISTS_INQUIRY(HttpStatus.NOT_FOUND, "I-001", "문의가 없습니다."),

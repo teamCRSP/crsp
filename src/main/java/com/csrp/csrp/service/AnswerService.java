@@ -29,7 +29,7 @@ public class AnswerService {
     User user = userRepository.findById(tokenUserInfo.getId())
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
     Inquiry inquiry = inquiryRepository.findById(answerRegisterRequestDTO.getInquiryId())
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_ANSWER));
+        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_INQUIRY));
     Answer entity = answerRegisterRequestDTO.toEntity(answerRegisterRequestDTO, user, inquiry);
     answerRepository.save(entity);
 
