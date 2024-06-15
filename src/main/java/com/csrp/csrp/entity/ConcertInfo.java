@@ -3,21 +3,10 @@ package com.csrp.csrp.entity;
 
 import com.csrp.csrp.form.ConcertForm;
 import com.csrp.csrp.type.ConcertType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -78,6 +67,16 @@ public class ConcertInfo extends BaseTime {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
+
+  @OneToMany(mappedBy = "concertInfo", cascade = CascadeType.ALL)
+  private List<Review> reviews = new ArrayList<Review>();
+
+  @OneToMany(mappedBy = "concertInfo", cascade = CascadeType.ALL)
+  private List<Love> loves = new ArrayList<Love>();
+
+  @OneToMany(mappedBy = "concertInfo", cascade = CascadeType.PERSIST)
+  private List<ReservationHistory> reservationHistories = new ArrayList<ReservationHistory>();
+
 
   public static ConcertInfo from(ConcertForm form, String concertImagePath, User user) {
 
