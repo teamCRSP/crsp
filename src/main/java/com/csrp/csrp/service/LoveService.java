@@ -42,6 +42,7 @@ public class LoveService {
     }
   }
 
+  // 좋아요 개수
   public int loveCount(Long concertInfoId) {
     ConcertInfo concertInfo = concertInfoRepository.findById(concertInfoId)
         .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
