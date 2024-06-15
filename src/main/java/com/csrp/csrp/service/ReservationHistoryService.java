@@ -44,16 +44,5 @@ public class ReservationHistoryService {
     return reservationHistory.stream().map(ReservationHistoryResponseDTO::new).toList();
   }
 
-  // 예매 내역 삭제
-  public boolean reservationHistoryDelete(Long reservationHistoryDeleteRequestDTO, TokenUserInfo tokenUserInfo) {
-    userRepository.findById(tokenUserInfo.getId())
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
-    ReservationHistory reservationHistory = reservationHistoryRepository.findById(reservationHistoryDeleteRequestDTO)
-        .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY));
-    reservationHistoryRepository.delete(reservationHistory);
-    return true;
-  }
-
-
 
 }
