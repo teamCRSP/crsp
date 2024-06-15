@@ -26,7 +26,9 @@ public class ReservationDetailResponseDTO {
 
   private int ticketCount;
 
-  private LocalDateTime concertDate;
+  private LocalDateTime startDate;
+
+  private LocalDateTime endDate;
 
   private String concertLocation;
 
@@ -40,7 +42,8 @@ public class ReservationDetailResponseDTO {
     this.concertType = concertInfo.getConcertType();
     this.seatInfo = reservationDetail.getConcertSeat();
     this.ticketCount = reservationDetail.getTicketCount();
-    this.concertDate = reservationDetail.getConcertDate();
+    this.startDate = reservationDetail.getStartDate();
+    this.endDate = reservationDetail.getEndDate();
     this.concertSeatPrice = reservationDetail.getConcertSeatPrice();
     this.concertLocation = reservationDetail.getConcertLocInfo().getLocation().get(0);  /////////////////////////// 고치기
     this.concertInfoId = concertInfo.getId();
