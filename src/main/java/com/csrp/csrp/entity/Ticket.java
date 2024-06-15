@@ -1,10 +1,7 @@
 package com.csrp.csrp.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
@@ -21,9 +18,6 @@ public class Ticket extends BaseTime{
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ticket_id")
   private Long id;
-
-  @Column(name = "concert_date", nullable = false)
-  private LocalDateTime concertDate;  // 콘서트 날짜
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "reservation_history_id")
