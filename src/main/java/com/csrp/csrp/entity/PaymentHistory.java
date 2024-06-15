@@ -2,10 +2,7 @@ package com.csrp.csrp.entity;
 
 import com.csrp.csrp.type.PaymentStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
@@ -40,4 +37,15 @@ public class PaymentHistory {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
+
+  public static PaymentHistory toEntity(User user, ReservationHistory reservationHistory) {
+    return PaymentHistory.builder()
+        .amount(reservationHistory.getAmount())
+        .paymentDate(LocalDateTime.now())
+        .paymentStatus(PaymentStatus.COMPLETED)
+        .user(user)
+        .reservationHistory(reservationHistory)
+        .build();
+  }
+
 }
