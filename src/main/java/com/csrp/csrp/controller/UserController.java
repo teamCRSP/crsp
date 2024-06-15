@@ -24,11 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
   private final UserService userService;
 
-  @GetMapping("/")
-  public ResponseEntity<String> test() {
-    return ResponseEntity.ok("Hello from Spring Boot Backend!");
-  }
-
 // 회원가입
   @PostMapping("/signUp")
   public ResponseEntity<?>signUp(
