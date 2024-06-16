@@ -31,6 +31,7 @@ public enum ErrorCode {
   DATABASE_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"D-001", "업데이트 실패"),
   DATABASE_SELECT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"D-002", "조회 실패"),
   EACH_CONCERT_INFO_NOT_FOUND(HttpStatus.BAD_REQUEST, "C-006", "개별 콘서트 존재 안함"),
+  THE_NUMBER_OF_TICKETS_IS_INSUFFICIENT(HttpStatus.BAD_REQUEST, "C-010", "티켓 수가 부족합니다."),
 
   // Request dto 로 데이터가 전달되지 않을 경우
   MISSING_REQUEST_DTO_ERROR(HttpStatus.NOT_FOUND, "ALL-001", "DTO 값이 없습니다."),
@@ -61,7 +62,7 @@ public enum ErrorCode {
   // TICKET
   NOT_EXISTS_TICKET(HttpStatus.NOT_FOUND, "T-001", "티켓이 없습니다."),
 
-  // RESERVATION_DEAIL
+  // RESERVATION_DETAIL
   NOT_EXISTS_RESERVATION_DETAIL(HttpStatus.NOT_FOUND, "RD-001", "찾는 상세 예매 내역이 없습니다."),
 
   // PAYMENT_HISTORY
