@@ -12,4 +12,5 @@ public interface EachConcertInfoRepository extends JpaRepository<EachConcertInfo
   Optional<EachConcertInfo> findByConcertNameAndConcertLocation(String concertName, String concertLocation);
 
   EachConcertInfo findByConcertLocInfo(ConcertLocInfo saveConcertLocInfo);
+
 }

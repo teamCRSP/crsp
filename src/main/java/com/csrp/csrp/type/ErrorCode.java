@@ -30,6 +30,7 @@ public enum ErrorCode {
   CONCERT_LOCATION_NOT_MATCH(HttpStatus.BAD_REQUEST, "C-009", "콘서트 제목이 일치 안함"),
   DATABASE_UPDATE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"D-001", "업데이트 실패"),
   DATABASE_SELECT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"D-002", "조회 실패"),
+  EACH_CONCERT_INFO_NOT_FOUND(HttpStatus.BAD_REQUEST, "C-006", "개별 콘서트 존재 안함"),
 
   // Request dto 로 데이터가 전달되지 않을 경우
   MISSING_REQUEST_DTO_ERROR(HttpStatus.NOT_FOUND, "ALL-001", "DTO 값이 없습니다."),

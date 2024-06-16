@@ -27,6 +27,7 @@ public class EachConcertInfo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+
   @OneToOne(orphanRemoval = true)
   @JoinColumn(name = "concert_loc_info_id")
   private ConcertLocInfo concertLocInfo;
