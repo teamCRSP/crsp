@@ -1,6 +1,6 @@
 package com.csrp.csrp.form;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +14,7 @@ public class DiscountForm {
 
   private Integer discountAmount; // 할인 가격
 
-  private LocalDateTime discountStart;
+  private LocalDate discountStart;
 
-  private LocalDateTime discountEnd;
+  private LocalDate discountEnd;
 }

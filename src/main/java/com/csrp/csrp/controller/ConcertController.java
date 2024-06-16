@@ -49,8 +49,7 @@ public class ConcertController {
       @RequestParam("concertLocation") String concertLocation,
       @RequestPart(value = "register") @Valid EachConcertInfoForm form
   ) {
-    concertService.registerEachConcert(concertName, concertLocation, form);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(concertService.registerEachConcert(concertName, concertLocation, form));
   }
 
   @PutMapping("/update")

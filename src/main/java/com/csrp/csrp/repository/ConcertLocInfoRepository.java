@@ -2,6 +2,7 @@ package com.csrp.csrp.repository;
 
 import com.csrp.csrp.entity.ConcertLocInfo;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +12,11 @@ public interface ConcertLocInfoRepository extends JpaRepository<ConcertLocInfo, 
 
   boolean existsByLocation(String concertLocation);
 
-  List<ConcertLocInfo> findAllByConcertTitle(String concertName);
+  List<ConcertLocInfo> findByConcertInfoId(Long concertInfoId);
 
-  ConcertLocInfo findByLocation(String findLocation);
+  Optional<ConcertLocInfo> findByConcertTitleAndLocation(String concertName,
+      String concertLocation);
+
+  boolean existsByConcertTitle(String concertName);
 
 }
