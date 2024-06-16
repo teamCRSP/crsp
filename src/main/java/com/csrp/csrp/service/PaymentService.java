@@ -40,14 +40,13 @@ public class PaymentService {
     // 결제 성공 -> 예매 내역 등록 -> 예매 내역 상세 등록 -> 티켓 발부 -> 결제 내역 등록
     public void paymentDone(List<PaymentRequestDTO> request, TokenUserInfo tokenUserInfo) {
         ReservationHistory reservationHistory = null;
-        ReservationDetail reservationDetail = null;
         Ticket ticket = null;
         try {
             int amount = 0;
             for (PaymentRequestDTO paymentRequestDTO : request) {
                 amount += (paymentRequestDTO.getTicketCount() * paymentRequestDTO.getConcertSeatPrice());
             }
-            ConcertInfo concertInfo = concertInfoRepository.findById(request.get(0).getConcertLocId())
+            ConcertInfo concertInfo = concertInfoRepository.findById(request.get(0).getConcertInfoId())
                     .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
             User user = userRepository.findById(tokenUserInfo.getId())
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
@@ -60,32 +59,35 @@ public class PaymentService {
             ReservationHistory saveReservation = reservationHistoryRepository.save(reservationHistory);
             // 예매 내역 상세 등록
             for (PaymentRequestDTO paymentRequestDTO : request) {
-                reservationDetail = ReservationDetail.builder()
+                ReservationDetail reservationDetail = ReservationDetail.builder()
                         .endDate(paymentRequestDTO.getEndDate())
                         .startDate(paymentRequestDTO.getStartDate())
                         .concertSeat(paymentRequestDTO.getConcertSeat())
                         .concertSeatPrice(paymentRequestDTO.getConcertSeatPrice())
                         .ticketCount(paymentRequestDTO.getTicketCount())
-                        .concertLocInfo(concertLocInfoRepository.findById(paymentRequestDTO.getConcertLocId())
+                        .concertLocInfo(concertLocInfoRepository.findById(paymentRequestDTO.getConcertInfoId())
                                 .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_LOCATION_NOT_FOUND)))
                         .reservationHistory(reservationHistoryRepository.findById(saveReservation.getId())
                                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_RESERVATION_HISTORY)))
                         .build();
                 ReservationDetail save = reservationDetailRepository.save(reservationDetail);
 
-                ConcertLocInfo concertLocInfo = concertLocInfoRepository.findById(paymentRequestDTO.getConcertLocId())
+                ConcertLocInfo concertLocInfo = concertLocInfoRepository.findById(paymentRequestDTO.getConcertInfoId())
                         .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_LOCATION_NOT_FOUND));
-                EachConcertInfo eachConcertInfo = eachConcertInfoRepository.findByConcertLocInfo(concertLocInfo)
-                        .orElseThrow(() -> new CustomException(ErrorCode.EACH_CONCERT_INFO_NOT_FOUND));
-                if (save.getConcertSeat().equals("seatA") && eachConcertInfo.getSeatA() > 0) {
-                    eachConcertInfo.setSeatA(eachConcertInfo.getSeatA() - 1);
+                EachConcertInfo eachConcertInfo = eachConcertInfoRepository.findByConcertLocInfo(concertLocInfo);
+
+                if (save.getConcertSeat().equals("seatA") && eachConcertInfo.getSeatA() - save.getTicketCount() >= 0) {
+                    eachConcertInfo.setSeatA(eachConcertInfo.getSeatA() - save.getTicketCount());
                     eachConcertInfoRepository.save(eachConcertInfo);
-                } else if (save.getConcertSeat().equals("seatB") && eachConcertInfo.getSeatB() > 0) {
-                    eachConcertInfo.setSeatA(eachConcertInfo.getSeatB() - 1);
+                } else if (save.getConcertSeat().equals("seatB") && eachConcertInfo.getSeatB() - save.getTicketCount() >= 0) {
+                    eachConcertInfo.setSeatB(eachConcertInfo.getSeatB() - save.getTicketCount());
                     eachConcertInfoRepository.save(eachConcertInfo);
-                } else if (save.getConcertSeat().equals("seatS") && eachConcertInfo.getSeatS() > 0) {
-                    eachConcertInfo.setSeatA(eachConcertInfo.getSeatS() - 1);
+                } else if (save.getConcertSeat().equals("seatS") && eachConcertInfo.getSeatS() - save.getTicketCount() >= 0) {
+                    eachConcertInfo.setSeatS(eachConcertInfo.getSeatS() - save.getTicketCount());
                     eachConcertInfoRepository.save(eachConcertInfo);
+                } else {
+                    // 남아있는 티켓 수가 부족합니다.
+                    throw new CustomException(ErrorCode.THE_NUMBER_OF_TICKETS_IS_INSUFFICIENT);
                 }
 
                 // 티켓 발부
