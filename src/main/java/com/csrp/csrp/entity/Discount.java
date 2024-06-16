@@ -8,9 +8,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,15 +37,15 @@ public class Discount extends BaseTime{
 
   private Integer discountAmount; // 할인 가격
 
-  private LocalDateTime discountStart;
+  private LocalDate discountStart;
 
-  private LocalDateTime discountEnd;
+  private LocalDate discountEnd;
 
-  @ColumnDefault("false")
   private Boolean discountActive;
 
   public static Discount from(DiscountForm form, ConcertInfo concertInfo){
     return Discount.builder()
+        .discountActive(false)
         .concertInfo(concertInfo)
         .discountAmount(form.getDiscountAmount())
         .discountStart(form.getDiscountStart())

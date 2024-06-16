@@ -7,7 +7,10 @@ import com.csrp.csrp.form.DiscountForm;
 import com.csrp.csrp.repository.ConcertInfoRepository;
 import com.csrp.csrp.repository.DiscountRepository;
 import com.csrp.csrp.type.ErrorCode;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +24,21 @@ public class DiscountService {
 
   private final DiscountRepository discountRepository;
 
-  @Transactional
-  public Boolean concertDiscount(Long id, DiscountForm discountForm) {
 
-    if (concertInfoRepository.findById(id).isEmpty()){
+  @Transactional
+  public void saveSeparateSchedulerConcertInfo(ConcertInfo concertInfo) {
+    concertInfoRepository.save(concertInfo);
+  }
+
+  @Transactional
+  public void saveSeparateSchedulerDiscount(Discount discount) {
+    discountRepository.save(discount);
+  }
+
+  @Transactional
+  public boolean concertDiscount(Long id, DiscountForm discountForm) {
+
+    if (concertInfoRepository.findById(id).isEmpty()) {
       throw new CustomException(ErrorCode.CONCERT_NOT_FOUND);
     }
 
@@ -38,67 +52,43 @@ public class DiscountService {
      * */
 
     ConcertInfo concertInfo = concertInfoRepository.findById(id)
-        .orElseThrow(()->new CustomException(ErrorCode.CONCERT_NOT_FOUND));
-
+        .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
 
     LocalDateTime registerStart = concertInfo.getStartDate();
     LocalDateTime registerEnd = concertInfo.getEndDate();
 
-    LocalDateTime discountStart = discountForm.getDiscountStart();
-    LocalDateTime discountEnd = discountForm.getDiscountEnd();
+    LocalDate discountStart = discountForm.getDiscountStart();
+    LocalDate discountEnd = discountForm.getDiscountEnd();
     Integer discountAmount = discountForm.getDiscountAmount(); // 할인 금액
 
-    LocalDateTime today = LocalDateTime.now();
-
+    LocalDate today = LocalDate.now();
 
     Integer sPrice = concertInfo.getSeatSPrice();
     Integer aPrice = concertInfo.getSeatAPrice();
     Integer bPrice = concertInfo.getSeatBPrice();
 
-
-
-
-    if (discountStart.isBefore(today) && discountEnd.isBefore(today)){
+    // 할인 시작일과 할인 종료일이 현재일보다 이전일 수는 없다
+    if (discountStart.isBefore(today) && discountEnd.isBefore(today)) {
       throw new CustomException(ErrorCode.DISCOUNT_DATE_NOT_VALID);
     }
 
-    if (discountStart.isBefore(registerStart) && discountEnd.isBefore(registerStart)){
+    // 할인 시작일과 할인 종료일이 콘서트 개최일보다 이전일 수는 없다
+    if (discountStart.isBefore(ChronoLocalDate.from(registerStart)) && discountEnd.isBefore(ChronoLocalDate.from(registerStart))) {
       throw new CustomException(ErrorCode.DISCOUNT_DATE_NOT_VALID);
     }
 
-    if (discountStart.isAfter(registerEnd) && discountEnd.isAfter(registerEnd)){
+    //할인 시작일과 할인 종료일이 콘서트 종료일보다 이전일 수는 없다
+    if (discountStart.isAfter(ChronoLocalDate.from(registerEnd)) && discountEnd.isAfter(ChronoLocalDate.from(registerEnd))) {
       throw new CustomException(ErrorCode.DISCOUNT_DATE_NOT_VALID);
     }
 
-    if (sPrice < discountAmount || aPrice < discountAmount || bPrice < discountAmount){
+    if (sPrice < discountAmount || aPrice < discountAmount || bPrice < discountAmount) {
       throw new CustomException(ErrorCode.DISCOUNT_PRICE_NOT_VALID);
     }
 
     Discount discount = Discount.from(discountForm, concertInfo);
 
-    discount.setDiscountActive(true);
-
     discountRepository.save(discount);
-
-
-    concertInfo.setSeatSPrice(sPrice - discountAmount);
-    concertInfo.setSeatAPrice(aPrice - discountAmount);
-    concertInfo.setSeatBPrice(bPrice - discountAmount);
-
-    concertInfoRepository.save(concertInfo);
-
-
-    Integer sPriceNow = concertInfo.getSeatSPrice();
-    Integer aPriceNow = concertInfo.getSeatAPrice();
-    Integer bPriceNow = concertInfo.getSeatBPrice();
-
-
-
-    // 할인 적용 안된 경우
-    if (sPrice.equals(sPriceNow) || aPrice.equals(aPriceNow) || bPrice.equals(bPriceNow)){
-      throw new CustomException(ErrorCode.DATABASE_UPDATE_FAIL);
-    }
-
 
     return true;
   }

@@ -3,6 +3,7 @@ package com.csrp.csrp.entity;
 
 import com.csrp.csrp.form.ConcertForm;
 import com.csrp.csrp.type.ConcertType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
