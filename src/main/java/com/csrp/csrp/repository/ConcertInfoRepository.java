@@ -1,7 +1,6 @@
 package com.csrp.csrp.repository;
 
 import com.csrp.csrp.entity.ConcertInfo;
-import com.csrp.csrp.entity.ConcertLocInfo;
 import java.time.LocalDateTime;
 
 import java.util.Optional;

@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ConcertService {
 
-    private static final Logger log = LoggerFactory.getLogger(ConcertService.class);
     private final ConcertInfoRepository concertInfoRepository;
     private final EachConcertInfoRepository eachConcertInfoRepository;
     private final ConcertLocInfoRepository concertLocRepository;

@@ -19,7 +19,4 @@ public interface ConcertLocInfoRepository extends JpaRepository<ConcertLocInfo, 
 
   boolean existsByConcertTitle(String concertName);
 
-
-  void deleteByLocationAndConcertTitle(String location, String concertTitle);
-
 }
