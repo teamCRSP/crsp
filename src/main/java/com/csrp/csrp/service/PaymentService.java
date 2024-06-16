@@ -40,7 +40,7 @@ public class PaymentService {
     // 결제 성공 -> 예매 내역 등록 -> 예매 내역 상세 등록 -> 티켓 발부 -> 결제 내역 등록
     public void paymentDone(List<PaymentRequestDTO> request, TokenUserInfo tokenUserInfo) {
         ReservationHistory reservationHistory = null;
-        Ticket ticket = null;
+        List <Ticket> tickets = null;
         try {
             int amount = 0;
             for (PaymentRequestDTO paymentRequestDTO : request) {
@@ -91,7 +91,7 @@ public class PaymentService {
                 }
 
                 // 티켓 발부
-                ticketService.getTicket(save, user);
+                tickets = ticketService.getTicket(save, user);
             }
 
 
@@ -101,8 +101,8 @@ public class PaymentService {
             if (reservationHistory != null) {
                 reservationHistoryRepository.delete(reservationHistory);
             }
-            if (ticket != null) {
-                ticketRepository.delete(ticket);
+            if (tickets != null) {
+                ticketRepository.deleteAll(tickets);
             }
             throw new RuntimeException(e);
         }
