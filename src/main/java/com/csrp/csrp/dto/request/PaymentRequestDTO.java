@@ -1,9 +1,5 @@
 package com.csrp.csrp.dto.request;
 
-import com.csrp.csrp.entity.PaymentHistory;
-import com.csrp.csrp.entity.ReservationHistory;
-import com.csrp.csrp.entity.User;
-import com.csrp.csrp.type.PaymentStatus;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
