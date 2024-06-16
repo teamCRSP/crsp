@@ -23,7 +23,7 @@ public class PaymentRequestDTO {
   private Long concertLocInfoId;
 
   @NotNull
-  private Long concertLocId;
+  private Long concertInfoId;
 
   @NotNull
   private String concertSeat;
