@@ -11,12 +11,12 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:8080/'); // 서버의 실제 URL로 변경
+      const response = await fetch('http://localhost:8080/');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const jsonData = await response.json(); // 혹은 response.json()으로도 가능
-      setData(jsonData);
+      const textData = await response.text(); // 서버가 JSON이 아닌 문자열을 반환하기 때문에 .text() 사용
+      setData(textData);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -37,7 +37,12 @@ function App() {
         >
           {data}
         </a>
-     
+        {data && (
+          <div>
+            <h2>Data from API:</h2>
+            <pre>{data}</pre>
+          </div>
+        )}
       </header>
     </div>
   );
