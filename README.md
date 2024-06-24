@@ -26,4 +26,4 @@
 추가적으로 `고객`문의에 대한 답변도 한다
 
 ## ERD
-![Copy of Copy of RSP Team Project](https://github.com/teamCRSP/crsp/assets/152678910/d9530273-2512-49e5-bf01-e73b5f19558d)
+![Copy of Copy of RSP Team Project](https://github.com/teamCRSP/crsp/assets/152678910/42fa5690-175d-45f1-bf4c-eb4738e6b3ae)
