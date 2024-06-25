@@ -6,7 +6,7 @@ import naverImage from "../assets/naver.png";
 import { Link } from "react-router-dom";
 import DaumPost from "./DaumPost";
 
-import {API_BASE_URL as BASE, USER} from '../config/host-config';
+import {API_BASE_URL as BASE, USER} from '../constants/host';
 import axios from "axios";
 
 function Register() {
