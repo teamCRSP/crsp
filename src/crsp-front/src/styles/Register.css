@@ -9,6 +9,7 @@
     color: #000;
     border-radius: 10px;
     padding: 30px 40px;
+
 }
 
 .wrapper h1 {
@@ -42,6 +43,7 @@
     padding: 20px 45px 20px 20px;
 }
 
+
 .input-box input::placeholder {
     color: #000;
 }
@@ -51,27 +53,6 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: 16px;
-}
-
-.wrapper .remember-forget {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14.5px;
-    margin: 25px 0;
-}
-
-remember-forget label input {
-    align-content: #000;
-    margin-right: 4px;
-}
-
-.remember-forget .find{
-    color: #000;
-    text-decoration: none;
-}
-
-.remember-forget .find:hover {
-    text-decoration: underline;
 }
 
 .wrapper button {
@@ -85,22 +66,7 @@ remember-forget label input {
     font-size: 16px;
     color: #fff;
     font-weight: 700;
-}
-
-.wrapper .register-link {
-    font-size: 14.5px;
-    text-align: center;
-    margin: 15px 0 20px 0;
-}
-
-.register-link .register {
-    color: #000;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.register-link a:hover {
-    text-decoration: underline;
+    margin-bottom: 20px;
 }
 
 .social-kakao-login {
@@ -120,4 +86,37 @@ remember-forget label input {
     width: 40px;
     height: 40px;
     cursor: pointer;
+}
+
+  .role {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+  }
+  .role .role-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px #333;
+    height: 40px;
+    width: 150px;
+    border-radius: 40px;
+    margin: 0 10px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .role-button:hover {
+    background: #333;
+    color: white;
+  }
+  .role-button.selected {
+    background: #333;
+    color: white;
+}
+.wrapper span {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
