@@ -3,16 +3,16 @@ import "../styles/Register.css";
 import { FaUser, FaLock } from "react-icons/fa";
 import kakaoImage from "../assets/kakao.png";
 import naverImage from "../assets/naver.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import DaumPost from "./DaumPost";
-
-import {API_BASE_URL as BASE, USER} from '../constants/host';
 import axios from "axios";
+import { API_BASE_URL as BASE, USER } from "../constants/host";
 
 function Register() {
-
+    const navigate = useNavigate();
     const API_BASE_URL = BASE + USER;
-
+    const [profileImage, setProfileImage] = useState(null); // 프로필 이미지 상태 추가
+    const [profileImageBlob, setProfileImageBlob] = useState(null); // 프로필 이미지
     const [userValue, setUserValue] = useState({
         email: "",
         password: "",
@@ -31,7 +31,7 @@ function Register() {
         phone: "",
         age: "",
         address: "",
-        detailAddress: "", 
+        detailAddress: "",
     });
 
     const [correct, setCorrect] = useState({
@@ -41,7 +41,7 @@ function Register() {
         phone: false,
         age: false,
         address: false,
-        detailAddress: false, 
+        detailAddress: false,
         role: false,
     });
 
@@ -49,8 +49,39 @@ function Register() {
 
     const registerButtonClickHandler = (e) => {
         e.preventDefault();
-        console.log(userValue);
-        console.log(correct);
+
+        const allCorrect = Object.values(correct).every(
+            (value) => value === true
+        );
+
+        if (allCorrect) {
+            // 모든 필드가 올바르게 입력된 경우 처리 로직
+            console.log("모든 필드가 올바르게 입력되었습니다.");
+
+            const userFormData = new FormData();
+            const user = JSON.stringify(userValue);
+            const blob = new Blob([user], { type: "application/json" });
+            userFormData.append("user", blob);
+            userFormData.append("profileImage", profileImageBlob);
+            axios
+                .post(API_BASE_URL + "/signUp", userFormData, {
+                    headers: {
+                        "Contest-Type": "multipart/form-data",
+                    },
+                })
+                .then((response) => {
+                    console.log("Registration successful:", response.data);
+                    navigate("/login")
+                    
+                })
+                .catch((error) => {
+                    console.error("Registration failed:", error);
+                    
+                });
+        } else {
+            // 하나 이상의 필드가 올바르지 않은 경우 처리 로직
+            console.log("입력이 올바르지 않은 필드가 있습니다.");
+        }
     };
 
     const emailHandler = (e) => {
@@ -65,18 +96,15 @@ function Register() {
         } else if (!regExp.test(inputVal)) {
             msg = "이메일 형식으로 작성해주세요.";
         } else {
-            msg = "이메일 사용 가능합니다."
+            msg = "이메일 사용 가능합니다.";
             flag = true;
             // 이메일 중복체크
             // fetchDuplicationCheck(inputVal);
-
         }
-        // 이메일 중복체크 
+        // 이메일 중복체크
         const fetchDuplicationCheck = (eamil) => {
-
             // 나중에 다시 작성 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            
-        }
+        };
 
         saveInputState({
             key: "email",
@@ -174,8 +202,22 @@ function Register() {
         });
     };
 
+    // 프로필 이미지 선택 핸들러
+    const handleProfileImageChange = (e) => {
+        const file = e.target.files[0];
+        // 파일이 Blob 형식인지 확인
+        if (!file instanceof Blob) {
+            console.error("선택된 파일이 올바르지 않습니다.");
+            return;
+        }
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setProfileImageBlob(file);
+            setProfileImage(reader.result);
+        };
+    };
     const handleRoleClick = (role) => {
-        let flag;
         setUserValue({ ...userValue, role });
         setSelectedRole(role);
         setCorrect({
@@ -226,7 +268,7 @@ function Register() {
     return (
         <div className="container">
             <div className="wrapper">
-                <form action="">
+                <form>
                     <h1>
                         <Link to="#" className="home">
                             CRSP
@@ -373,6 +415,28 @@ function Register() {
                             고객
                         </div>
                     </div>
+                    <div className="profile">
+                        <img
+                            src={
+                                profileImage
+                                    ? profileImage
+                                    : require("../assets/naver.png")
+                            }
+                            alt="profile"
+                            className="profile-img"
+                        />
+                        <label className="signUp-img" htmlFor="profile-img">
+                            프로필 사진
+                        </label>
+                        <input
+                            id="profile-img"
+                            type="file"
+                            accept="image/*"
+                            style={{ display: "none" }}
+                            onChange={handleProfileImageChange}
+                        />
+                    </div>
+
                     <button type="submit" onClick={registerButtonClickHandler}>
                         회원가입
                     </button>
