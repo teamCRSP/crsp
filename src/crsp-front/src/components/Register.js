@@ -79,6 +79,7 @@ function Register() {
         } else {
             // 하나 이상의 필드가 올바르지 않은 경우 처리 로직
             console.log("입력이 올바르지 않은 필드가 있습니다.");
+            alert("모두 입력하세요.")
         }
     };
 
