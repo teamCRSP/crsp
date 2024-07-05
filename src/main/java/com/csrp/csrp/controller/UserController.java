@@ -40,7 +40,6 @@ public class UserController {
   public ResponseEntity<?>emailCheck(
       @RequestParam("email") String email
   ) {
-    log.info("emailCheck@@@@@@@@@@@@@@@@@@@ - {}", email);
     boolean result = userService.emailCheck(email);
     return ResponseEntity.ok().body(result);
   }
