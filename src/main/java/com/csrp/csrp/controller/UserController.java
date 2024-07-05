@@ -35,6 +35,15 @@ public class UserController {
     return ResponseEntity.ok().body(result);
   }
 
+  // 이메일 중복체크
+  @GetMapping
+  public ResponseEntity<?>emailCheck(
+      @RequestParam String email
+  ) {
+    boolean result = userService.emailCheck(email);
+    return ResponseEntity.ok().body(result);
+  }
+
   // 로그인
   @PostMapping("/signIn")
   public ResponseEntity<?>signIn(
