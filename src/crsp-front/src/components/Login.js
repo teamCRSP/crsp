@@ -73,10 +73,6 @@ function Login() {
                         <FaLock className="icon" />
                     </div>
                     <div className="remember-forget">
-                        <label>
-                            <input type="checkbox" />
-                            로그인 상태 유지
-                        </label>
                         <Link to="#" className="find">
                             아이디 찾기
                         </Link>
