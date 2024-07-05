@@ -42,6 +42,9 @@ public class User extends BaseTime{
   @Column(name = "address", nullable = false)
   private String address;
 
+  @Column(name = "detail_address", nullable = false)
+  private String detailAddress;
+
   @Column(name = "profile_image", nullable = true)
   private String profileImage;
 

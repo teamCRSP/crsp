@@ -109,4 +109,9 @@ public class UserService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_USER));
     return new UserShowResponseDTO(user);
   }
+
+  // 이메일 중복체크
+  public boolean emailCheck(String email) {
+    return userRepository.existsByEmail(email);
+  }
 }

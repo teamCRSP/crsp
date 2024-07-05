@@ -24,7 +24,7 @@ public class SignUpRequestDTO {
   private String name;
 
   @NotBlank
-  @Size(min = 11, max = 11)
+  @Size(max = 13)
   private String phone;
 
   @NotNull
@@ -33,6 +33,9 @@ public class SignUpRequestDTO {
 
   @NotBlank
   private String address;
+
+  @NotBlank
+  private String detailAddress;
 
   private Role role;
 
@@ -46,6 +49,7 @@ public class SignUpRequestDTO {
         .phone(this.phone)
         .age(this.age)
         .address(this.address)
+        .detailAddress(this.detailAddress)
         .role(this.role)
         .profileImage(profileImagePath)
         .build();
