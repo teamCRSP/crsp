@@ -3,7 +3,7 @@ import "../styles/Register.css";
 import { FaUser, FaLock } from "react-icons/fa";
 import kakaoImage from "../assets/kakao.png";
 import naverImage from "../assets/naver.png";
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DaumPost from "./DaumPost";
 import axios from "axios";
 import { API_BASE_URL as BASE, USER } from "../constants/host";
@@ -71,12 +71,10 @@ function Register() {
                 })
                 .then((response) => {
                     console.log("Registration successful:", response.data);
-                    navigate("/login")
-                    
+                    navigate("/login");
                 })
                 .catch((error) => {
                     console.error("Registration failed:", error);
-                    
                 });
         } else {
             // 하나 이상의 필드가 올바르지 않은 경우 처리 로직
@@ -84,11 +82,11 @@ function Register() {
         }
     };
 
-    const emailHandler = (e) => {
+    const emailHandler = async (e) => {
         const regExp =
             /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
         let msg;
-        let flag;
+        let flag = false; // 초기값 설정
         const inputVal = e.target.value;
 
         if (!inputVal) {
@@ -96,15 +94,10 @@ function Register() {
         } else if (!regExp.test(inputVal)) {
             msg = "이메일 형식으로 작성해주세요.";
         } else {
-            msg = "이메일 사용 가능합니다.";
-            flag = true;
-            // 이메일 중복체크
-            // fetchDuplicationCheck(inputVal);
+            const checkResult = await emailCheck(inputVal);
+            msg = checkResult.msg;
+            flag = checkResult.flag;
         }
-        // 이메일 중복체크
-        const fetchDuplicationCheck = (eamil) => {
-            // 나중에 다시 작성 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        };
 
         saveInputState({
             key: "email",
@@ -112,6 +105,27 @@ function Register() {
             msg,
             flag,
         });
+    };
+    // 이메일 중복 체크
+    const emailCheck = async (inputVal) => {
+        let msg = "";
+        let flag = false;
+        try {
+            const res = await axios.get(`${API_BASE_URL}/emailCheck?email=${inputVal}`);
+            if (res.status === 200) {
+                if (res.data) { // res.data가 true이면 이메일 중복
+                    msg = "이메일이 중복되었습니다.";
+                } else { // res.data가 false이면 이메일 사용 가능
+                    msg = "사용 가능한 이메일 입니다.";
+                    flag = true;
+                }
+            } else {
+                msg = "서버 통신이 원활하지 않습니다.";
+            }
+        } catch (error) {
+            msg = "서버 통신 중 오류가 발생했습니다.";
+        }
+        return { msg, flag };
     };
 
     const nameHandler = (e) => {
