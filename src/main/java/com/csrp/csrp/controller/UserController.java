@@ -38,8 +38,9 @@ public class UserController {
   // 이메일 중복체크
   @GetMapping("/emailCheck")
   public ResponseEntity<?>emailCheck(
-      @RequestParam String email
+      @RequestParam("email") String email
   ) {
+    log.info("emailCheck@@@@@@@@@@@@@@@@@@@ - {}", email);
     boolean result = userService.emailCheck(email);
     return ResponseEntity.ok().body(result);
   }
