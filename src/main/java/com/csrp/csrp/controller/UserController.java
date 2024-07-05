@@ -36,7 +36,7 @@ public class UserController {
   }
 
   // 이메일 중복체크
-  @GetMapping
+  @GetMapping("/emailCheck")
   public ResponseEntity<?>emailCheck(
       @RequestParam String email
   ) {
