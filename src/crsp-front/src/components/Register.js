@@ -454,6 +454,9 @@ function Register() {
                     <button type="submit" onClick={registerButtonClickHandler}>
                         회원가입
                     </button>
+                    <div className="register-link">
+                        <Link to="/login" className="login">로그인</Link>
+                    </div>
                     <div className="social-kakao-login">
                         <img
                             src={naverImage}
