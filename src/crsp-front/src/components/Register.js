@@ -63,6 +63,9 @@ function Register() {
             const blob = new Blob([user], { type: "application/json" });
             userFormData.append("user", blob);
             userFormData.append("profileImage", profileImageBlob);
+
+            console.log(user)
+
             axios
                 .post(API_BASE_URL + "/signUp", userFormData, {
                     headers: {
@@ -78,6 +81,8 @@ function Register() {
                 });
         } else {
             // 하나 이상의 필드가 올바르지 않은 경우 처리 로직
+            const user = JSON.stringify(userValue);
+            console.log(user)
             console.log("입력이 올바르지 않은 필드가 있습니다.");
             alert("모두 입력하세요.")
         }

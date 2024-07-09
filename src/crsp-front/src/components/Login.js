@@ -49,7 +49,7 @@ function Login() {
             <div className="wrapper">
                 <form action="">
                     <h1>
-                        <Link to="#" className="home">
+                        <Link to="/" className="home">
                             CRSP
                         </Link>
                     </h1>
