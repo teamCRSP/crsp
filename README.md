@@ -25,5 +25,12 @@
 
 추가적으로 `고객`문의에 대한 답변도 한다
 
+**프리뷰**
+![메인페이지](https://github.com/user-attachments/assets/6e595362-95c9-4ff8-b6ea-f1b045680a45)
+
+![로그인](https://github.com/user-attachments/assets/00fb7f01-e14f-4d0a-8893-55725cedbc18)
+
+![계정생성](https://github.com/user-attachments/assets/31e03407-38b6-4a0e-9642-984a16be1a1a)
+
 ## ERD
 ![Copy of Copy of RSP Team Project](https://github.com/teamCRSP/crsp/assets/152678910/42fa5690-175d-45f1-bf4c-eb4738e6b3ae)
