@@ -49,13 +49,4 @@ imp:
 logging:
   level:
     org.springframework.cache: trace
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-  datasource:
-    url: jdbc:mariadb://crsp-db.c4pevrmrsqpe.ap-northeast-2.rds.amazonaws.com:3306/crsp
-    username: admin
-    password: password
 
