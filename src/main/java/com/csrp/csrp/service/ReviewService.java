@@ -18,8 +18,10 @@ import com.csrp.csrp.type.ReviewStopStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -74,10 +76,10 @@ public class ReviewService {
   }
 
   // 전체 리뷰 보여주기
-  public ReviewListResponseDTO AllReview(AllReviewPageDTO allReviewPageDTO) {
+  @Cacheable(cacheNames = "getReviews", key = "'reviews:page:' + #page + 'size:' + #size", cacheManager = "cacheManager")
+  public ReviewListResponseDTO AllReview(int page, int size) {
     PageRequest pageRequest = PageRequest.of(
-        allReviewPageDTO.getPage() - 1,
-        allReviewPageDTO.getSize(),
+        page - 1, size,
         Sort.by("id").descending()
     );
     Page<Review> all = reviewRepository.findAll(pageRequest);

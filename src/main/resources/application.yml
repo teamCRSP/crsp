@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  profiles:
+    default: local
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -24,12 +26,18 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
   servlet:
     multipart:
       enabled: true
       max-file-size: 10MB #1개의 파일의 최대사이즈
       max-request-size: 20MB # 전체 요청의 최대사이즈
-
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
   jwt:
     secret: eW91bmdzaWstc3ByaW5nLWJvb3Qtc3RvcmV0YWJsZXJlc2VydmF0aW9uc2VydmljZS1wcm9qZWN0LXR1dG9yaWFsLWp3dC1zZWNyZXQta2V5Cg==
 # 아임 포트
@@ -37,3 +45,7 @@ IMP_API_KEY: 4627373384371080
 imp:
   api:
     secretKey: YDkJUiY0CBOD4lcS2u5yhLF0aanmAMqKhsrNcbJFMSoJaRF2nkGLCukgCmFxrrEP1068NZko93Zck2ml
+
+logging:
+  level:
+    org.springframework.cache: trace

@@ -1,6 +1,7 @@
 package com.csrp.csrp.dto.response;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 @Setter
 @Getter
 @ToString
+@NoArgsConstructor
 public class PageResponseDTO<T> {
 
   private int startPage;

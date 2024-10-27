@@ -35,8 +35,8 @@ public class ReviewController {
 
   // 전체 리뷰 정보 보기
   @GetMapping("/reviewList")
-  public ResponseEntity<?> AllReview(@Validated @RequestBody AllReviewPageDTO allReviewPageDTO) {
-    ReviewListResponseDTO reviewListResponseDTO = reviewService.AllReview(allReviewPageDTO);
+  public ResponseEntity<?> AllReview(@RequestParam("page") int page, @RequestParam("size") int size) {
+    ReviewListResponseDTO reviewListResponseDTO = reviewService.AllReview(page, size);
     return ResponseEntity.ok().body(reviewListResponseDTO);
   }
 

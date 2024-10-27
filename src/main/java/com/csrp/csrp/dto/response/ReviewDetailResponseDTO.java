@@ -21,7 +21,7 @@ public class ReviewDetailResponseDTO {
 
   private int rating;
 
-  private LocalDateTime createdAt;
+  private String createdAt;
 
   private String title;
 
@@ -44,7 +44,7 @@ public class ReviewDetailResponseDTO {
   public ReviewDetailResponseDTO(Review review) {
     this.content = review.getContent();
     this.rating = review.getRating();
-    this.createdAt = review.getCreatedAt();
+    this.createdAt = String.valueOf(review.getCreatedAt());
     this.title = review.getConcertInfo().getTitle();
     this.concertType = review.getConcertInfo().getConcertType();
     this.concertImage = review.getConcertInfo().getConcertImage();
